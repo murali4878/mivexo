@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Mail, MapPin, Instagram } from 'lucide-react'
 import mivexoLogo from '../../assets/mivexo_logo.png'
 
@@ -23,8 +23,11 @@ const footerLinks = {
 }
 
 export default function Footer() {
+  const location = useLocation()
+  const isHome = location.pathname === '/'
+
   return (
-    <footer className="bg-gray-950 text-gray-400 pt-16 pb-8 border-t border-gray-900">
+    <footer className={`bg-gray-950 text-gray-400 pt-16 pb-8 border-t border-gray-900 ${isHome ? 'hidden lg:block' : ''}`}>
       <div className="max-w-7xl mx-auto px-6 md:px-10">
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
           {/* Brand */}

@@ -62,9 +62,13 @@
 @layer utilities {
   .bg-gradient-wayvero,
   .bg-gradient-mivexo {
-    background: linear-gradient(135deg, #6C3EF4 0%, #8b5cf6 50%, #4f46e5 100%);
+    background: linear-gradient(135deg, #8B3FF2 0%, #a855f7 50%, #4f46e5 100%);
   }
   
+  .bg-mivexo-radial {
+    background: radial-gradient(circle at 50% 0%, rgba(139, 63, 242, 0.25) 0%, rgba(11, 23, 48, 0.98) 70%, #070E1E 100%);
+  }
+
   .text-balance {
     text-wrap: balance;
   }
@@ -76,5 +80,14 @@
   
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

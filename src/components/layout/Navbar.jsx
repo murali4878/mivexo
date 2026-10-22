@@ -33,8 +33,10 @@ export default function Navbar() {
 
   useEffect(() => setIsOpen(false), [location])
 
+  const isHome = location.pathname === '/'
+
   return (
-    <header className={`sticky top-0 z-50 transition-all duration-300 ${
+    <header className={`sticky top-0 z-50 transition-all duration-300 ${isHome ? 'hidden lg:block' : ''} ${
       scrolled ? 'bg-white/90 dark:bg-[#0B0B1A]/90 backdrop-blur-xl shadow-sm shadow-violet-500/10 border-b border-gray-100 dark:border-gray-800/50' : 'bg-transparent'
     }`}>
       <nav className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">

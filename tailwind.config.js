@@ -12,11 +12,20 @@ export default {
           300: '#c4b5fd',
           400: '#a78bfa',
           500: '#8b5cf6',
-          600: '#6C3EF4',
+          600: '#8B3FF2',
           700: '#5b21b6',
           800: '#4c1d95',
           900: '#3b1473',
-          DEFAULT: '#6C3EF4'
+          DEFAULT: '#8B3FF2'
+        },
+        mivexo: {
+          purple: '#8B3FF2',
+          purpleLight: '#A855F7',
+          purpleDark: '#6C25D9',
+          navy: '#0B1730',
+          navyDark: '#070E1E',
+          navyLight: '#111E3D',
+          navyBorder: '#1E2D52'
         },
         amber: {
           400: '#fbbf24',
