@@ -1,76 +1,80 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react'
+import { ArrowRight, Sparkles, Rocket } from 'lucide-react'
 
 export default function MobileCTA() {
   const shouldReduceMotion = useReducedMotion()
 
   return (
-    <section className="py-12 px-4 bg-gradient-to-b from-[#070E1E] via-[#0B1730] to-[#0B1730] text-white overflow-hidden">
+    <section className="py-10 px-4 bg-white dark:bg-[#070E1E] text-white overflow-hidden transition-colors">
       <div className="max-w-md mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-20px' }}
           transition={{ duration: shouldReduceMotion ? 0.05 : 0.4 }}
-          className="relative rounded-3xl p-6 bg-gradient-to-br from-[#8B3FF2] via-[#6C25D9] to-[#0B1730] border border-[#8B3FF2]/50 shadow-2xl text-center overflow-hidden"
+          className="relative rounded-3xl p-6 bg-gradient-to-br from-[#1e144f] via-[#2d1b69] to-[#4c1d95] border border-violet-500/30 shadow-2xl overflow-hidden"
         >
-          {/* Ambient decorative glow */}
-          <div className="absolute -top-12 -right-12 w-40 h-40 rounded-full bg-white/15 blur-2xl pointer-events-none" />
-          <div className="absolute -bottom-12 -left-12 w-40 h-40 rounded-full bg-cyan-400/20 blur-2xl pointer-events-none" />
+          {/* Ambient Cosmic Orbs */}
+          <div className="absolute -top-12 -right-12 w-44 h-44 rounded-full bg-indigo-500/25 blur-2xl pointer-events-none" />
+          <div className="absolute -bottom-10 -left-10 w-40 h-40 rounded-full bg-fuchsia-500/20 blur-2xl pointer-events-none" />
 
-          <div className="relative z-10">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 text-white text-[11px] font-bold mb-4">
-              <Sparkles size={12} className="text-amber-300" />
-              Batch 2026 Admissions Open
+          {/* Sparkle stars */}
+          <div className="absolute top-4 left-6 text-violet-300/40 text-xs pointer-events-none">✦</div>
+          <div className="absolute top-12 right-20 text-indigo-200/50 text-sm pointer-events-none">✦</div>
+          <div className="absolute bottom-6 left-1/3 text-violet-300/30 text-xs pointer-events-none">✦</div>
+
+          <div className="relative z-10 flex flex-col items-start text-left">
+            {/* Tag */}
+            <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-violet-300 block mb-2">
+              READY TO START?
             </span>
 
-            <h2 className="text-2xl xs:text-3xl font-black text-white leading-tight mb-3">
-              Start Your Journey. <br />
-              <span className="text-amber-300">Build Your Dream Career.</span>
+            {/* Title */}
+            <h2 className="text-2xl font-black text-white leading-tight mb-2.5 max-w-xs">
+              Take the First Step Towards Your Future
             </h2>
 
-            <p className="text-xs text-violet-100 leading-relaxed mb-6 max-w-xs mx-auto">
-              Get full access to all curriculum modules, live mentor code reviews, real capstone deliverables, and verified certificates.
+            {/* Subtitle */}
+            <p className="text-xs text-violet-200/90 leading-relaxed mb-6 max-w-xs">
+              Join thousands of students who are building their careers with MIVEXO.
             </p>
 
-            {/* Checklist items */}
-            <div className="grid grid-cols-2 gap-2 text-[11px] text-violet-100 font-semibold mb-6 text-left max-w-xs mx-auto">
-              <div className="flex items-center gap-1.5">
-                <CheckCircle2 size={13} className="text-emerald-300 shrink-0" />
-                <span>20+ Tech Tracks</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <CheckCircle2 size={13} className="text-emerald-300 shrink-0" />
-                <span>QR Verified Cert</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <CheckCircle2 size={13} className="text-emerald-300 shrink-0" />
-                <span>MNC Mentors</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <CheckCircle2 size={13} className="text-emerald-300 shrink-0" />
-                <span>Placement Support</span>
-              </div>
+            {/* Action Row */}
+            <div className="flex items-center gap-3 w-full">
+              <Link
+                to="/pricing"
+                className="py-2.5 px-5 rounded-full bg-white text-slate-900 font-bold text-xs shadow-lg hover:bg-slate-100 active:scale-95 transition-all flex items-center gap-1.5"
+              >
+                <span>Enroll Now</span>
+                <ArrowRight size={13} />
+              </Link>
             </div>
-
-            {/* Primary Action Button */}
-            <Link
-              to="/pricing"
-              className="w-full py-4 px-6 rounded-2xl bg-white text-[#0B1730] font-black text-sm shadow-xl active:scale-[0.98] transition-all flex items-center justify-center gap-2 mb-3"
-            >
-              <span>Enroll Now &amp; Start Today</span>
-              <ArrowRight size={16} className="text-[#8B3FF2]" />
-            </Link>
-
-            {/* Secondary Action Link */}
-            <Link
-              to="/programs"
-              className="text-xs font-bold text-violet-200 hover:text-white underline underline-offset-4 block py-1"
-            >
-              Or explore all 20 curriculum syllabi →
-            </Link>
           </div>
+
+          {/* 3D Rocket Illustration on the Right */}
+          <motion.div
+            animate={shouldReduceMotion ? {} : { y: [0, -8, 0], x: [0, 2, 0] }}
+            transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute -bottom-2 -right-2 pointer-events-none"
+          >
+            {/* Smoke cloud base */}
+            <div className="relative w-32 h-32 flex items-center justify-center">
+              {/* Rocket Body */}
+              <div className="relative -rotate-45 flex flex-col items-center">
+                {/* Flame */}
+                <div className="w-4 h-6 rounded-b-full bg-gradient-to-b from-amber-400 via-orange-500 to-transparent animate-pulse" />
+                {/* Rocket Icon Container */}
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white shadow-xl border border-white/20">
+                  <Rocket size={26} className="text-white drop-shadow-md" />
+                </div>
+              </div>
+
+              {/* Puffy Clouds around base */}
+              <div className="absolute bottom-0 right-2 w-12 h-8 rounded-full bg-white/20 blur-sm" />
+              <div className="absolute bottom-2 right-10 w-10 h-7 rounded-full bg-white/25 blur-xs" />
+            </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

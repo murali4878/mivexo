@@ -1,385 +1,330 @@
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { useState } from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import {
-  Sparkles,
   ArrowRight,
   Play,
-  Star,
-  ShieldCheck,
+  Layers,
+  Activity,
+  Users,
   Code2,
-  Cpu,
   Cloud,
-  Palette,
-  Terminal,
+  BarChart2,
+  Cpu,
+  Sparkles,
   CheckCircle2,
-  Zap,
-  Award,
-  Users
+  X
 } from 'lucide-react'
-
-const mobileTechTabs = [
-  {
-    id: 'fullstack',
-    label: 'Full Stack',
-    icon: Code2,
-    badge: 'MERN & Next.js',
-    accentColor: 'text-violet-400',
-    bgBadge: 'bg-violet-500/20 text-violet-300 border-violet-500/30',
-    snippet: `// Next.js 14 + MongoDB Pipeline
-export async function createTenant() {
-  const org = await db.orgs.init({
-    tier: 'ENTERPRISE',
-    auth: 'Supabase-JWT'
-  });
-  return { status: 'LIVE', code: 200 };
-}`,
-    tech: ['React 18', 'Next.js', 'Node', 'Mongo']
-  },
-  {
-    id: 'ai',
-    label: 'AI & Neural',
-    icon: Cpu,
-    badge: 'LLMs & RAG',
-    accentColor: 'text-amber-400',
-    bgBadge: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
-    snippet: `# PyTorch RAG Vector Search
-from langchain_community import Embed
-model = Embed.load("mivexo/llm-v2")
-vector_store = Pinecone.connect(
-    api_key=CONFIG.PINECONE_KEY
-)
-# 4.9/5 Precision Achieved`,
-    tech: ['PyTorch', 'LangChain', 'Pinecone', 'Transformers']
-  },
-  {
-    id: 'cloud',
-    label: 'DevOps',
-    icon: Cloud,
-    badge: 'AWS & K8s',
-    accentColor: 'text-cyan-400',
-    bgBadge: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
-    snippet: `# AWS Terraform Kubernetes Cluster
-resource "aws_eks_cluster" "prod" {
-  name     = "mivexo-k8s-core"
-  role_arn = aws_iam.cluster.arn
-  version  = "1.30"
-}
-# Zero-Downtime Rolling Update`,
-    tech: ['AWS', 'Docker', 'Kubernetes', 'Terraform']
-  },
-  {
-    id: 'design',
-    label: 'UI/UX & Cyber',
-    icon: Palette,
-    badge: 'Design & Security',
-    accentColor: 'text-rose-400',
-    bgBadge: 'bg-rose-500/20 text-rose-300 border-rose-500/30',
-    snippet: `// Design Token & Security Guard
-export const authPolicy = {
-  csrfProtection: true,
-  wcagCompliance: 'AAA',
-  rateLimit: '100req/min'
-};`,
-    tech: ['Figma', 'WCAG 2.1', 'OWASP 10', 'Burp Suite']
-  }
-]
+import MivexoIntroVideo from '../ui/MivexoIntroVideo'
 
 export default function MobileHero() {
-  const [activeTab, setActiveTab] = useState(0)
   const shouldReduceMotion = useReducedMotion()
-
-  // Auto-cycle tabs slowly for ambient animation
-  useEffect(() => {
-    if (shouldReduceMotion) return
-    const timer = setInterval(() => {
-      setActiveTab((prev) => (prev + 1) % mobileTechTabs.length)
-    }, 5500)
-    return () => clearInterval(timer)
-  }, [shouldReduceMotion])
-
-  const curTab = mobileTechTabs[activeTab]
+  const [showVideoModal, setShowVideoModal] = useState(false)
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-[#0B1730] via-[#0E1A38] to-[#070E1E] text-white pt-6 pb-12 px-4 sm:px-6">
-      {/* Animated Glowing Radial Ambient Blobs */}
+    <section className="relative overflow-hidden bg-gradient-to-b from-blue-50/50 via-white to-white dark:from-[#070E1E] dark:via-[#091124] dark:to-[#070E1E] text-slate-900 dark:text-white pt-6 pb-8 px-4 sm:px-6 transition-colors">
+      {/* Soft Ambient Background Glow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Top Purple Ambient Orb */}
-        <motion.div
-          animate={
-            shouldReduceMotion
-              ? {}
-              : {
-                  scale: [1, 1.15, 1],
-                  opacity: [0.35, 0.5, 0.35]
-                }
-          }
-          transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute -top-24 -left-20 w-80 h-80 rounded-full bg-[#8B3FF2]/35 blur-[90px]"
-        />
-
-        {/* Bottom Right Cyan/Navy Ambient Orb */}
-        <motion.div
-          animate={
-            shouldReduceMotion
-              ? {}
-              : {
-                  scale: [1, 1.2, 1],
-                  opacity: [0.25, 0.4, 0.25]
-                }
-          }
-          transition={{ duration: 8.5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-          className="absolute top-1/2 -right-24 w-72 h-72 rounded-full bg-indigo-600/30 blur-[85px]"
-        />
-
-        {/* Cyber Grid Texture Overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.18]"
-          style={{
-            backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(139, 63, 242, 0.45) 1px, transparent 0)',
-            backgroundSize: '24px 24px'
-          }}
-        />
+        <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-violet-400/15 dark:bg-violet-600/15 blur-[100px]" />
+        <div className="absolute top-1/3 -right-20 w-72 h-72 rounded-full bg-blue-400/15 dark:bg-cyan-500/10 blur-[90px]" />
       </div>
 
-      <div className="relative z-10 max-w-lg mx-auto flex flex-col items-center text-center">
-        {/* Floating Top Mini Pill Tag */}
+      <div className="relative z-10 max-w-md mx-auto flex flex-col items-center text-center">
+        {/* Top Tag: LEARN · BUILD · GROW */}
         <motion.div
-          initial={{ opacity: 0, y: -10 }}
+          initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45 }}
-          className="mb-4 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-[#8B3FF2]/40 shadow-sm shadow-[#8B3FF2]/20 text-[11px] font-bold text-violet-200"
+          transition={{ duration: 0.4 }}
+          className="mb-3"
         >
-          <Sparkles size={13} className="text-amber-400 animate-spin" style={{ animationDuration: '6s' }} />
-          <span>India's Leading Industry EdTech Platform</span>
+          <span className="text-[11px] font-extrabold tracking-[0.2em] text-violet-600 dark:text-violet-400 uppercase">
+            LEARN · BUILD · GROW
+          </span>
         </motion.div>
 
-        {/* Main Headline: Bold, Punchy, Mobile-Optimized */}
+        {/* Headline */}
         <motion.h1
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.08 }}
-          className="text-4xl xs:text-5xl font-black tracking-tight leading-[1.08] mb-4 text-white"
-        >
-          Learn.{' '}
-          <span className="bg-gradient-to-r from-[#8B3FF2] via-[#A855F7] to-cyan-400 bg-clip-text text-transparent">
-            Build.
-          </span>{' '}
-          <br />
-          Achieve.
-        </motion.h1>
-
-        {/* Short, High-Impact Value Proposition Subtitle */}
-        <motion.p
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.15 }}
-          className="text-sm xs:text-base text-gray-300 font-normal leading-relaxed mb-6 max-w-sm"
+          transition={{ duration: 0.5, delay: 0.08 }}
+          className="text-3xl xs:text-4xl font-extrabold tracking-tight leading-[1.15] text-slate-900 dark:text-white mb-3"
         >
-          Master industry tech tracks with <span className="text-white font-semibold">real-world capstones</span>, direct mentor code reviews, and <span className="text-violet-300 font-semibold">QR-verified credentials</span>.
+          Build Skills <br />
+          For a{' '}
+          <span className="bg-gradient-to-r from-violet-600 via-indigo-600 to-purple-600 dark:from-violet-400 dark:to-indigo-300 bg-clip-text text-transparent">
+            Better Tomorrow
+          </span>
+        </motion.h1>
+
+        {/* Subtitle */}
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="text-xs xs:text-sm text-slate-600 dark:text-slate-300 font-normal leading-relaxed mb-6 max-w-xs"
+        >
+          Industry-relevant programs, real-world projects and certification to help you start your tech career.
         </motion.p>
 
-        {/* Floating Feature Badges Row */}
+        {/* Action Buttons Row */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="w-full flex items-center justify-center gap-2 mb-6 flex-wrap"
+          className="flex items-center justify-center gap-3 mb-6 w-full max-w-xs"
         >
-          <motion.div
-            animate={shouldReduceMotion ? {} : { y: [0, -4, 0] }}
-            transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-[11px] font-semibold text-gray-200 shadow-sm"
-          >
-            <ShieldCheck size={14} className="text-emerald-400 shrink-0" />
-            <span>QR Verified Certs</span>
-          </motion.div>
-
-          <motion.div
-            animate={shouldReduceMotion ? {} : { y: [0, 4, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-[11px] font-semibold text-gray-200 shadow-sm"
-          >
-            <Zap size={14} className="text-amber-400 shrink-0" />
-            <span>Top MNC Mentors</span>
-          </motion.div>
-
-          <motion.div
-            animate={shouldReduceMotion ? {} : { y: [0, -3, 0] }}
-            transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-[11px] font-semibold text-gray-200 shadow-sm"
-          >
-            <Users size={14} className="text-cyan-400 shrink-0" />
-            <span>200+ Colleges</span>
-          </motion.div>
-        </motion.div>
-
-        {/* Primary & Secondary Call To Actions (Thumb Reach Optimized) */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.45, delay: 0.25 }}
-          className="w-full flex flex-col gap-3 mb-8"
-        >
-          {/* Prominent High-Converting Primary Enrollment Button */}
-          <Link
-            to="/pricing"
-            className="relative group w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-[#8B3FF2] via-[#7C3AED] to-indigo-600 hover:from-[#7c30e3] hover:to-indigo-700 text-white font-extrabold text-base shadow-xl shadow-[#8B3FF2]/40 active:scale-[0.98] transition-all flex items-center justify-center gap-2 overflow-hidden"
-          >
-            {/* Shimmer sweep animation */}
-            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
-            <span>Enroll in Industry Tracks</span>
-            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-          </Link>
-
-          {/* Secondary Curriculum Exploration Button */}
           <Link
             to="/programs"
-            className="w-full py-3.5 px-5 rounded-2xl bg-white/10 hover:bg-white/15 active:scale-[0.98] border border-white/20 text-white font-bold text-sm backdrop-blur-md transition-all flex items-center justify-center gap-2"
+            className="flex-1 py-2.5 px-4 rounded-full bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 text-xs font-bold shadow-md shadow-slate-900/10 active:scale-95 transition-all flex items-center justify-center gap-1.5"
           >
-            <Play size={15} className="text-[#8B3FF2] fill-[#8B3FF2]" />
-            <span>Explore All 20+ Curriculum Tracks</span>
+            <span>Explore Programs</span>
+            <ArrowRight size={14} />
           </Link>
+
+          <button
+            onClick={() => setShowVideoModal(true)}
+            className="py-2.5 px-4 rounded-full bg-white dark:bg-slate-800/90 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 text-xs font-semibold shadow-xs active:scale-95 transition-all flex items-center justify-center gap-1.5"
+          >
+            <span className="w-5 h-5 rounded-full bg-violet-100 dark:bg-violet-900/50 flex items-center justify-center text-violet-600 dark:text-violet-400">
+              <Play size={10} className="fill-current translate-x-0.5" />
+            </span>
+            <span>Play Video</span>
+          </button>
         </motion.div>
 
-        {/* Interactive Mobile Tech Console / Code Window */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="w-full rounded-2xl bg-[#070E1E]/90 border border-white/15 shadow-2xl overflow-hidden backdrop-blur-xl text-left mb-6"
-        >
-          {/* Console Header Bar */}
-          <div className="px-3.5 py-2.5 bg-white/5 border-b border-white/10 flex items-center justify-between">
-            <div className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" />
-              <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block" />
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block" />
-              <span className="text-[11px] font-mono text-gray-400 font-bold ml-1.5 flex items-center gap-1">
-                <Terminal size={11} className="text-[#8B3FF2]" /> mivexo-core.ts
-              </span>
-            </div>
-
-            <div className="flex items-center gap-1.5">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-              </span>
-              <span className="text-[10px] font-mono text-emerald-400 font-bold uppercase">
-                Live Build
-              </span>
-            </div>
-          </div>
-
-          {/* Interactive Mobile Tabs (Touch Switcher) */}
-          <div className="p-2 border-b border-white/10 bg-black/30">
-            <div className="grid grid-cols-4 gap-1">
-              {mobileTechTabs.map((t, idx) => {
-                const Icon = t.icon
-                const isActive = activeTab === idx
-                return (
-                  <button
-                    key={t.id}
-                    onClick={() => setActiveTab(idx)}
-                    className={`py-1.5 px-1 rounded-xl text-[10px] font-extrabold transition-all flex flex-col items-center justify-center gap-1 cursor-pointer ${
-                      isActive
-                        ? 'bg-[#8B3FF2] text-white shadow-md shadow-[#8B3FF2]/40'
-                        : 'bg-white/5 text-gray-400 hover:text-white hover:bg-white/10'
-                    }`}
-                  >
-                    <Icon size={12} className={isActive ? 'text-white' : t.accentColor} />
-                    <span className="truncate max-w-[65px]">{t.label}</span>
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-
-          {/* Code Window Body */}
-          <div className="p-3.5 bg-black/60">
-            <div className="flex items-center justify-between text-[10px] text-gray-400 mb-2 pb-1.5 border-b border-white/10">
-              <span className="font-bold text-violet-300">{curTab.badge}</span>
-              <span className="text-emerald-400 font-mono font-bold flex items-center gap-1">
-                <CheckCircle2 size={11} /> Mentor Reviewed
-              </span>
-            </div>
-
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={curTab.id}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.2 }}
-              >
-                <pre className="text-[10.5px] leading-relaxed font-mono text-gray-300 overflow-x-auto scrollbar-hide py-1">
-                  <code>{curTab.snippet}</code>
-                </pre>
-
-                {/* Tech Chips */}
-                <div className="flex flex-wrap gap-1 mt-2.5 pt-2 border-t border-white/10">
-                  {curTab.tech.map((item, i) => (
-                    <span
-                      key={i}
-                      className="text-[9.5px] font-semibold px-2 py-0.5 rounded-md bg-white/10 text-gray-300 border border-white/10"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Console Action Bar */}
-          <div className="px-3.5 py-2.5 bg-white/5 border-t border-white/10 flex items-center justify-between text-[11px]">
-            <span className="text-gray-400 text-[10px]">Ready to build this project?</span>
-            <Link
-              to="/pricing"
-              className="font-bold text-[#8B3FF2] hover:text-violet-300 flex items-center gap-1"
-            >
-              Enroll Track <ArrowRight size={11} />
-            </Link>
-          </div>
-        </motion.div>
-
-        {/* Social Proof & Trust Badges Strip */}
+        {/* Social Proof Strip: Avatars + Students Count */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.35 }}
-          className="w-full flex items-center justify-between px-3 py-2.5 rounded-2xl bg-white/5 border border-white/10 text-left"
+          transition={{ duration: 0.5, delay: 0.25 }}
+          className="flex items-center gap-2.5 mb-7"
         >
-          {/* Avatar Stack */}
-          <div className="flex items-center gap-2">
-            <div className="flex -space-x-2">
-              {['M', 'V', 'R', 'S'].map((ch, i) => (
-                <div
-                  key={i}
-                  className="w-7 h-7 rounded-full bg-gradient-to-br from-[#8B3FF2] via-[#7C3AED] to-indigo-600 border border-[#0B1730] flex items-center justify-center text-white text-[10px] font-black shadow-sm"
-                >
-                  {ch}
-                </div>
-              ))}
-            </div>
-            <div>
-              <div className="flex items-center text-amber-400 gap-0.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={11} className="fill-amber-400" />
-                ))}
-                <span className="text-white text-[11px] font-extrabold ml-1">4.9 / 5</span>
+          <div className="flex -space-x-2">
+            {[
+              { letter: 'R', gradient: 'from-violet-500 to-indigo-600' },
+              { letter: 'P', gradient: 'from-indigo-500 to-blue-600'   },
+              { letter: 'A', gradient: 'from-emerald-500 to-teal-600'  },
+              { letter: 'S', gradient: 'from-amber-500 to-orange-500'  },
+            ].map((st, i) => (
+              <div
+                key={i}
+                className={`w-7 h-7 rounded-full bg-gradient-to-br ${st.gradient} border-2 border-white dark:border-slate-900 flex items-center justify-center text-white text-[10px] font-black shadow-xs`}
+              >
+                {st.letter}
               </div>
-              <p className="text-[10px] text-gray-400 leading-tight">5,000+ Enrolled Students</p>
-            </div>
+            ))}
+          </div>
+          <div className="text-left leading-tight">
+            <span className="text-xs font-extrabold text-slate-900 dark:text-white block">
+              5,000+ Students
+            </span>
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
+              200+ Colleges
+            </span>
+          </div>
+        </motion.div>
+
+        {/* ── 3D Tech Isometric Showcase Graphic ── */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.94 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="relative w-full max-w-[320px] h-64 mb-6 flex items-center justify-center"
+        >
+          {/* Subtle Ambient Rings */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="w-64 h-64 rounded-full border border-violet-200/50 dark:border-violet-500/10" />
+            <div className="w-48 h-48 rounded-full border border-dashed border-indigo-200/60 dark:border-indigo-500/15" />
           </div>
 
-          <div className="text-right">
-            <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-              100% Verified
+          {/* Elevated Circular Pedestal */}
+          <div className="absolute bottom-4 w-52 h-14 rounded-[100%] bg-gradient-to-b from-blue-100 to-indigo-100/40 dark:from-slate-800 dark:to-slate-900/60 border border-blue-200/60 dark:border-slate-700/60 shadow-xl shadow-indigo-500/10 dark:shadow-black/40" />
+          <div className="absolute bottom-6 w-44 h-11 rounded-[100%] bg-gradient-to-b from-white via-blue-50 to-indigo-100 dark:from-slate-700 dark:to-slate-800 border border-blue-200/80 dark:border-slate-600 shadow-md" />
+
+          {/* Central 3D Laptop */}
+          <motion.div
+            animate={shouldReduceMotion ? {} : { y: [0, -6, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+            className="relative z-10 flex flex-col items-center -mt-4"
+          >
+            {/* Screen */}
+            <div className="w-40 h-28 rounded-xl bg-gradient-to-b from-slate-900 via-slate-900 to-indigo-950 p-2 shadow-2xl border-2 border-slate-700/80 relative overflow-hidden flex flex-col justify-between">
+              {/* Screen Glare reflection */}
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-white/10 to-transparent pointer-events-none" />
+
+              {/* Window dots */}
+              <div className="flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              </div>
+
+              {/* Glowing Code Symbol */}
+              <div className="flex-1 flex flex-col items-center justify-center">
+                <div className="flex items-center gap-1.5 text-cyan-400 font-mono font-black text-xl tracking-wider drop-shadow-[0_0_12px_rgba(34,211,238,0.7)]">
+                  <span>&lt;</span>
+                  <span className="text-white">/</span>
+                  <span>&gt;</span>
+                </div>
+                <span className="text-[8.5px] font-mono text-indigo-300 font-semibold tracking-wider uppercase mt-1">
+                  MIVEXO LMS · LIVE
+                </span>
+              </div>
+
+              {/* Bottom activity line */}
+              <div className="flex items-center justify-between text-[7px] font-mono text-slate-400 pt-1 border-t border-slate-800">
+                <span className="text-emerald-400 font-bold">● Running</span>
+                <span>Node.js v20</span>
+              </div>
+            </div>
+
+            {/* Laptop Base */}
+            <div className="w-48 h-3.5 bg-gradient-to-b from-slate-300 to-slate-400 dark:from-slate-600 dark:to-slate-700 rounded-b-xl shadow-lg border-t border-slate-200 dark:border-slate-500 flex items-center justify-center">
+              <div className="w-10 h-1 bg-slate-400 dark:bg-slate-500 rounded-full" />
+            </div>
+          </motion.div>
+
+          {/* Floating 3D Badge 1: AI (Top-Left) */}
+          <motion.div
+            animate={shouldReduceMotion ? {} : { y: [0, -8, 0], x: [0, 2, 0] }}
+            transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute top-10 left-3 z-20 px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 border border-blue-100 dark:border-slate-700 shadow-lg shadow-blue-500/10 flex items-center gap-1.5"
+          >
+            <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-[10px] font-black shadow-xs">
+              AI
+            </div>
+            <span className="text-[10px] font-bold text-slate-800 dark:text-white">Neural</span>
+          </motion.div>
+
+          {/* Floating 3D Badge 2: Cloud (Top-Right) */}
+          <motion.div
+            animate={shouldReduceMotion ? {} : { y: [0, 8, 0], x: [0, -2, 0] }}
+            transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+            className="absolute top-12 right-3 z-20 p-2 rounded-xl bg-white dark:bg-slate-800 border border-cyan-100 dark:border-slate-700 shadow-lg shadow-cyan-500/10 flex items-center gap-1.5"
+          >
+            <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-white shadow-xs">
+              <Cloud size={13} />
+            </div>
+            <span className="text-[10px] font-bold text-slate-800 dark:text-white">Cloud</span>
+          </motion.div>
+
+          {/* Floating 3D Badge 3: Analytics (Bottom-Right) */}
+          <motion.div
+            animate={shouldReduceMotion ? {} : { y: [0, -6, 0] }}
+            transition={{ duration: 3.8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+            className="absolute bottom-12 right-2 z-20 p-2 rounded-xl bg-white dark:bg-slate-800 border border-emerald-100 dark:border-slate-700 shadow-lg shadow-emerald-500/10 flex items-center gap-1.5"
+          >
+            <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white shadow-xs">
+              <BarChart2 size={13} />
+            </div>
+            <span className="text-[10px] font-bold text-slate-800 dark:text-white">Data</span>
+          </motion.div>
+
+          {/* Floating 3D Badge 4: Code (Bottom-Left) */}
+          <motion.div
+            animate={shouldReduceMotion ? {} : { y: [0, 6, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
+            className="absolute bottom-10 left-4 z-20 p-2 rounded-xl bg-white dark:bg-slate-800 border border-violet-100 dark:border-slate-700 shadow-lg shadow-violet-500/10 flex items-center gap-1.5"
+          >
+            <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-white shadow-xs">
+              <Code2 size={13} />
+            </div>
+            <span className="text-[10px] font-bold text-slate-800 dark:text-white">Web</span>
+          </motion.div>
+        </motion.div>
+
+        {/* ── 3 Metric Badges Row (Matches Reference Screen 1) ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.35 }}
+          className="grid grid-cols-3 gap-2.5 w-full"
+        >
+          {/* Card 1: 20+ Industry Tracks */}
+          <div className="p-3 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-200/90 dark:border-slate-800 shadow-xs flex flex-col items-center text-center">
+            <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950/60 border border-blue-100 dark:border-blue-900/40 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-1.5 shadow-xs">
+              <Layers size={18} />
+            </div>
+            <span className="text-base font-extrabold text-slate-900 dark:text-white leading-none">
+              20+
+            </span>
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-1 leading-tight">
+              Industry Tracks
+            </span>
+          </div>
+
+          {/* Card 2: Live Projects */}
+          <div className="p-3 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-200/90 dark:border-slate-800 shadow-xs flex flex-col items-center text-center">
+            <div className="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-950/60 border border-amber-100 dark:border-amber-900/40 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-1.5 shadow-xs">
+              <Activity size={18} />
+            </div>
+            <span className="text-base font-extrabold text-slate-900 dark:text-white leading-none">
+              Live
+            </span>
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-1 leading-tight">
+              Projects
+            </span>
+          </div>
+
+          {/* Card 3: Expert Mentorship */}
+          <div className="p-3 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-200/90 dark:border-slate-800 shadow-xs flex flex-col items-center text-center">
+            <div className="w-9 h-9 rounded-xl bg-cyan-50 dark:bg-cyan-950/60 border border-cyan-100 dark:border-cyan-900/40 text-cyan-600 dark:text-cyan-400 flex items-center justify-center mb-1.5 shadow-xs">
+              <Users size={18} />
+            </div>
+            <span className="text-base font-extrabold text-slate-900 dark:text-white leading-none">
+              Expert
+            </span>
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-1 leading-tight">
+              Mentorship
             </span>
           </div>
         </motion.div>
       </div>
+
+      {/* Video Modal Popup */}
+      {showVideoModal && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setShowVideoModal(false)}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            className="w-full max-w-sm relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              onClick={() => setShowVideoModal(false)}
+              className="absolute -top-3 -right-3 z-20 w-8 h-8 rounded-full bg-slate-800 border border-slate-700 text-slate-300 hover:text-white flex items-center justify-center shadow-lg"
+            >
+              <X size={15} />
+            </button>
+
+            {/* Header */}
+            <div className="mb-2 px-1">
+              <h3 className="text-sm font-bold text-white">MIVEXO Learning Platform</h3>
+              <p className="text-[11px] text-slate-400">15+ specializations · QR-verified certificates</p>
+            </div>
+
+            {/* Video Player */}
+            <div className="w-full aspect-video rounded-2xl overflow-hidden shadow-2xl shadow-violet-500/20 border border-violet-500/20">
+              <MivexoIntroVideo onEnd={() => {}} />
+            </div>
+
+            {/* CTA */}
+            <Link
+              to="/programs"
+              onClick={() => setShowVideoModal(false)}
+              className="mt-3 w-full py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-lg shadow-violet-500/25 active:scale-95 transition-all"
+            >
+              Explore All Programs <ArrowRight size={13} />
+            </Link>
+          </motion.div>
+        </div>
+      )}
     </section>
   )
 }

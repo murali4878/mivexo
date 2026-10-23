@@ -5,7 +5,6 @@ import Home from './pages/Home'
 import Programs from './pages/Programs'
 import LMSPortal from './pages/LMSPortal'
 import PlacementPrep from './pages/PlacementPrep'
-import JobPortal from './pages/JobPortal'
 
 import Ambassador from './pages/Ambassador'
 import About from './pages/About'
@@ -28,8 +27,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<><Navbar /><main className="flex-1"><Home /></main><Footer /></>} />
         <Route path="/programs" element={<><Navbar /><main className="flex-1"><Programs /></main><Footer /></>} />
-        <Route path="/jobs" element={<><Navbar /><main className="flex-1"><JobPortal /></main><Footer /></>} />
-        <Route path="/internships" element={<><Navbar /><main className="flex-1"><JobPortal /></main><Footer /></>} />
+
         <Route path="/placement" element={<><Navbar /><main className="flex-1"><PlacementPrep /></main><Footer /></>} />
 
         <Route path="/ambassador" element={<><Navbar /><main className="flex-1"><Ambassador /></main><Footer /></>} />

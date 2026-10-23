@@ -5,7 +5,6 @@ import mivexoLogo from '../../assets/mivexo_logo.png'
 const mobileFooterLinks = [
   { label: 'Programs', href: '/programs' },
   { label: 'LMS Portal', href: '/lms' },
-  { label: 'Jobs & Internships', href: '/jobs' },
   { label: 'Placement Prep', href: '/placement' },
   { label: 'Campus Ambassador', href: '/ambassador' },
   { label: 'About MIVEXO', href: '/about' },
@@ -14,20 +13,18 @@ const mobileFooterLinks = [
 
 export default function MobileFooter() {
   return (
-    <footer className="bg-[#070E1E] text-gray-400 pt-10 pb-24 px-4 border-t border-white/10 overflow-hidden">
+    <footer className="bg-gray-50 dark:bg-[#070E1E] text-gray-500 dark:text-gray-400 pt-10 pb-24 px-4 border-t border-gray-200 dark:border-white/10 overflow-hidden transition-colors">
       <div className="max-w-md mx-auto">
         {/* Brand Bar */}
         <div className="flex flex-col items-center text-center mb-8">
           <Link to="/" className="inline-block mb-3">
-            <div className="bg-white px-3 py-1.5 rounded-xl shadow-sm inline-block">
-              <img
-                src={mivexoLogo}
-                alt="MIVEXO"
-                className="h-7 w-auto object-contain"
-              />
-            </div>
+            <img
+              src={mivexoLogo}
+              alt="MIVEXO"
+              className="h-7 w-auto object-contain dark:brightness-0 dark:invert"
+            />
           </Link>
-          <p className="text-xs text-gray-400 max-w-xs leading-relaxed mb-2">
+          <p className="text-xs text-gray-500 dark:text-gray-400 max-w-xs leading-relaxed mb-2">
             Empowering students across India with industry-first technical training, hands-on internships, and career placements.
           </p>
           <p className="text-[11px] font-black tracking-widest uppercase text-[#8B3FF2]">
@@ -41,7 +38,7 @@ export default function MobileFooter() {
             <Link
               key={item.href}
               to={item.href}
-              className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 border border-white/5 transition-colors"
+              className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/5 transition-colors"
             >
               {item.label}
             </Link>
@@ -54,15 +51,15 @@ export default function MobileFooter() {
             href="https://www.instagram.com/mivexo.in/"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-200 text-xs font-bold transition-colors"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-200 text-xs font-bold transition-colors"
           >
-            <Instagram size={15} className="text-pink-400" />
+            <Instagram size={15} className="text-pink-500" />
             <span>@mivexo.in on Instagram</span>
           </a>
 
           <a
             href="mailto:mivexo.in@gmail.com"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-200 text-xs font-bold transition-colors"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-200 text-xs font-bold transition-colors"
           >
             <Mail size={15} className="text-violet-400" />
             <span>mivexo.in@gmail.com</span>
@@ -70,7 +67,7 @@ export default function MobileFooter() {
         </div>
 
         {/* Copyright & Bottom Info */}
-        <div className="pt-6 border-t border-white/10 text-center text-[11px] text-gray-400 space-y-1">
+        <div className="pt-6 border-t border-gray-200 dark:border-white/10 text-center text-[11px] text-gray-500 dark:text-gray-400 space-y-1">
           <p>© {new Date().getFullYear()} MIVEXO Technologies. All rights reserved.</p>
           <p className="flex items-center justify-center gap-1 text-[10px]">
             <span>Crafted with precision for Indian engineering talent</span>

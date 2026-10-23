@@ -1,38 +1,38 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import { ClipboardList, Laptop2, IndianRupee, Briefcase, CheckCircle2, Sparkles } from 'lucide-react'
+import { BookOpen, Code2, Award, Briefcase, CheckCircle } from 'lucide-react'
 
-const steps = [
+const journeySteps = [
   {
     step: '01',
-    icon: ClipboardList,
-    title: 'Register & Access Training',
-    desc: 'Choose your preferred domain from 20+ career tracks. Get instant LMS access to sequential video curriculum and weekly live mentor sessions.',
-    gradient: 'from-[#8B3FF2] to-indigo-600',
-    highlight: 'Instant LMS Unlock'
+    title: 'Learn Skills',
+    desc: 'Choose a program and learn from industry experts.',
+    icon: BookOpen,
+    circleColor: 'bg-violet-600 text-white',
+    iconBg: 'bg-violet-50 dark:bg-violet-950/60 text-violet-600 dark:text-violet-400 border-violet-200 dark:border-violet-800'
   },
   {
     step: '02',
-    icon: Laptop2,
-    title: 'Build Production Capstone',
-    desc: 'Work on realistic industry capstones designed by senior engineers. Push code via GitHub and simulate a real-world enterprise agile workflow.',
-    gradient: 'from-indigo-500 to-blue-500',
-    highlight: 'Real GitHub Repo'
+    title: 'Build Projects',
+    desc: 'Work on real-world projects and build your portfolio.',
+    icon: Code2,
+    circleColor: 'bg-emerald-500 text-white',
+    iconBg: 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800'
   },
   {
     step: '03',
-    icon: IndianRupee,
-    title: 'Mentor Review & Stipend',
-    desc: 'Receive line-by-line pull request code feedback. Top-performing interns qualify for performance-based stipends and official merit evaluations.',
-    gradient: 'from-blue-500 to-cyan-500',
-    highlight: 'Merit Rewards'
+    title: 'Earn Certificate',
+    desc: 'Get verified certification after course completion.',
+    icon: Award,
+    circleColor: 'bg-amber-500 text-white',
+    iconBg: 'bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-800'
   },
   {
     step: '04',
+    title: 'Career Preparation',
+    desc: 'Get interview guidance and job readiness support.',
     icon: Briefcase,
-    title: 'QR Certificate & Placements',
-    desc: 'Receive a tamper-proof QR-verified certificate recognized by college HODs, plus ATS resume reviews, mock interviews, and hiring partner referrals.',
-    gradient: 'from-emerald-500 to-teal-500',
-    highlight: 'HOD Approved'
+    circleColor: 'bg-teal-500 text-white',
+    iconBg: 'bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 border-teal-200 dark:border-teal-800'
   }
 ]
 
@@ -40,69 +40,62 @@ export default function MobileHowItWorks() {
   const shouldReduceMotion = useReducedMotion()
 
   return (
-    <section className="py-12 px-4 bg-gradient-to-b from-[#070E1E] to-[#0B1730] text-white overflow-hidden">
+    <section className="py-10 px-4 bg-white dark:bg-[#070E1E] text-slate-900 dark:text-white transition-colors">
       <div className="max-w-md mx-auto">
-        {/* Header */}
-        <div className="text-center mb-10">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#8B3FF2]/20 border border-[#8B3FF2]/40 text-[#A855F7] text-[11px] font-bold mb-2">
-            <Sparkles size={12} className="text-amber-300" />
-            4-Step Career Blueprint
+        {/* Section Header */}
+        <div className="text-center mb-8">
+          <span className="text-[11px] font-extrabold tracking-[0.2em] text-violet-600 dark:text-violet-400 uppercase block mb-1.5">
+            YOUR LEARNING JOURNEY
           </span>
-          <h2 className="text-2xl xs:text-3xl font-black text-white leading-tight mb-2">
-            How The Internship <br />
-            <span className="bg-gradient-to-r from-[#8B3FF2] to-cyan-400 bg-clip-text text-transparent">
-              Process Works
-            </span>
+          <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight mb-2">
+            From Learning to Career Success
           </h2>
-          <p className="text-xs text-gray-300 max-w-xs mx-auto leading-relaxed">
-            From first login to verified certificate and campus placement referrals.
+          <p className="text-xs text-slate-600 dark:text-slate-400 max-w-xs mx-auto leading-relaxed">
+            A simple path to build the skills, experience and confidence you need.
           </p>
         </div>
 
-        {/* Vertical Timeline Roadmap */}
-        <div className="relative pl-6 space-y-6">
-          {/* Vertical Connecting Glowing Line */}
-          <div className="absolute top-4 bottom-4 left-[27px] w-0.5 bg-gradient-to-b from-[#8B3FF2] via-cyan-400 to-emerald-400 rounded-full opacity-60" />
+        {/* Connected Step Cards with Dotted Path */}
+        <div className="relative pl-3 space-y-4">
+          {/* Vertical Dotted Connecting Line */}
+          <div className="absolute top-4 bottom-6 left-[22px] w-0.5 border-l-2 border-dashed border-violet-300 dark:border-violet-800 pointer-events-none" />
 
-          {steps.map((item, idx) => {
-            const Icon = item.icon
+          {journeySteps.map((step, idx) => {
+            const Icon = step.icon
             return (
               <motion.div
-                key={idx}
-                initial={{ opacity: 0, x: -15 }}
+                key={step.step}
+                initial={{ opacity: 0, x: -10 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: '-20px' }}
                 transition={{
                   duration: shouldReduceMotion ? 0.05 : 0.4,
-                  delay: shouldReduceMotion ? 0 : idx * 0.08
+                  delay: shouldReduceMotion ? 0 : idx * 0.07
                 }}
-                className="relative flex items-start gap-3.5 group"
+                className="relative flex items-center gap-3.5 z-10"
               >
-                {/* Numbered Node Icon */}
+                {/* Step Number Circle */}
                 <div
-                  className={`relative z-10 w-11 h-11 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center text-white font-black text-xs shadow-lg shadow-[#8B3FF2]/25 shrink-0`}
+                  className={`w-7 h-7 rounded-full ${step.circleColor} flex items-center justify-center text-[10.5px] font-black shrink-0 shadow-sm`}
                 >
-                  <Icon size={18} />
+                  {step.step}
                 </div>
 
-                {/* Step Card */}
-                <div className="flex-1 p-4 rounded-2xl bg-[#0F1C3A] border border-white/10 shadow-md">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-[10px] font-mono font-black text-[#A855F7] tracking-wider uppercase">
-                      Step {item.step}
-                    </span>
-                    <span className="text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-white/10 text-emerald-400 border border-white/10">
-                      {item.highlight}
-                    </span>
+                {/* Step Card with Icon & Text */}
+                <div className="flex-1 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200/90 dark:border-slate-800 shadow-xs flex items-center gap-3">
+                  <div
+                    className={`w-10 h-10 rounded-xl ${step.iconBg} border flex items-center justify-center shrink-0 shadow-xs`}
+                  >
+                    <Icon size={19} />
                   </div>
-
-                  <h3 className="text-sm font-black text-white mb-1.5 leading-snug">
-                    {item.title}
-                  </h3>
-
-                  <p className="text-xs text-gray-300 leading-relaxed font-normal">
-                    {item.desc}
-                  </p>
+                  <div className="flex-1 min-w-0 text-left">
+                    <h3 className="text-xs font-black text-slate-900 dark:text-white leading-tight">
+                      {step.title}
+                    </h3>
+                    <p className="text-[10.5px] text-slate-500 dark:text-slate-400 font-medium leading-snug mt-0.5">
+                      {step.desc}
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             )

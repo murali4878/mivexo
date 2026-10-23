@@ -41,7 +41,7 @@ export default function MobileStats() {
   const shouldReduceMotion = useReducedMotion()
 
   return (
-    <section className="py-6 px-4 bg-gradient-to-r from-[#0B1730] to-[#070E1E] border-y border-[#8B3FF2]/20">
+    <section className="py-6 px-4 bg-gradient-to-r from-violet-600 to-indigo-600 border-y border-violet-500/30">
       <div className="max-w-md mx-auto">
         <div className="grid grid-cols-2 gap-3">
           {mobileStats.map((item, idx) => {

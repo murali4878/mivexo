@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, Filter, Clock, Users, Star, ArrowRight, BookOpen, CheckCircle, Code, Layers, Sparkles, X, Laptop, Briefcase, Zap, Shield, Globe, Cpu, Smartphone, BarChart3, Database } from 'lucide-react'
+import { Search, Filter, Clock, Users, Star, ArrowRight, BookOpen, CheckCircle, Code, Layers, Sparkles, X, Laptop, Briefcase, Zap, Shield, Globe, Cpu, Smartphone, BarChart3, Database, Cloud, ShieldCheck, Laptop2, Brain, Palette, Blocks, Radio, Gamepad2, PieChart, Target, Megaphone, Landmark, Truck, Glasses, Dna, CheckSquare } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import GlassCard from '../components/ui/GlassCard'
 import ScrollReveal from '../components/ui/ScrollReveal'
+import MobileSyllabusModal from '../components/mobile/MobileSyllabusModal'
 
 // 20 Trending Domains with curated images, modules and career tracks
 const trending20Programs = [
@@ -452,11 +453,93 @@ const trending20Programs = [
 const domains = ['All', 'Technical', 'Analytics', 'Marketing', 'Design', 'Management', 'Finance']
 const levels = ['All Levels', 'Beginner', 'Intermediate', 'Advanced']
 
+const programIconMap = {
+  'prog-1': { icon: Laptop2, bg: 'from-blue-600 to-indigo-600' },
+  'prog-2': { icon: Brain, bg: 'from-purple-600 to-fuchsia-600' },
+  'prog-3': { icon: BarChart3, bg: 'from-emerald-500 to-teal-600' },
+  'prog-4': { icon: Cloud, bg: 'from-cyan-500 to-blue-600' },
+  'prog-5': { icon: ShieldCheck, bg: 'from-red-500 to-rose-600' },
+  'prog-6': { icon: Palette, bg: 'from-pink-500 to-rose-500' },
+  'prog-7': { icon: Smartphone, bg: 'from-violet-500 to-purple-600' },
+  'prog-8': { icon: Blocks, bg: 'from-amber-500 to-yellow-600' },
+  'prog-9': { icon: Radio, bg: 'from-teal-500 to-emerald-600' },
+  'prog-10': { icon: Gamepad2, bg: 'from-violet-600 to-indigo-700' },
+  'prog-11': { icon: PieChart, bg: 'from-amber-600 to-orange-600' },
+  'prog-12': { icon: Target, bg: 'from-indigo-600 to-violet-700' },
+  'prog-13': { icon: Megaphone, bg: 'from-rose-500 to-orange-500' },
+  'prog-14': { icon: Landmark, bg: 'from-emerald-600 to-green-700' },
+  'prog-15': { icon: Users, bg: 'from-sky-500 to-cyan-600' },
+  'prog-16': { icon: Truck, bg: 'from-amber-600 to-orange-700' },
+  'prog-17': { icon: Database, bg: 'from-blue-700 to-indigo-800' },
+  'prog-18': { icon: Glasses, bg: 'from-purple-600 to-pink-600' },
+  'prog-19': { icon: Dna, bg: 'from-teal-600 to-cyan-700' },
+  'prog-20': { icon: CheckSquare, bg: 'from-emerald-600 to-teal-700' }
+}
+
+function getCourseIconAndBg(prog) {
+  if (prog && prog.id && programIconMap[prog.id]) {
+    return programIconMap[prog.id]
+  }
+  const t = (typeof prog === 'string' ? prog : prog?.title || '').toLowerCase()
+  if (t.includes('ai') || t.includes('neural') || t.includes('deep')) return { icon: Brain, bg: 'from-purple-600 to-fuchsia-600' }
+  if (t.includes('data') || t.includes('analytics')) return { icon: BarChart3, bg: 'from-emerald-500 to-teal-600' }
+  if (t.includes('cloud') || t.includes('devops')) return { icon: Cloud, bg: 'from-cyan-500 to-blue-600' }
+  if (t.includes('cyber') || t.includes('security')) return { icon: ShieldCheck, bg: 'from-red-500 to-rose-600' }
+  if (t.includes('design') || t.includes('ux') || t.includes('ui')) return { icon: Palette, bg: 'from-pink-500 to-rose-500' }
+  if (t.includes('mobile') || t.includes('app')) return { icon: Smartphone, bg: 'from-violet-500 to-purple-600' }
+  if (t.includes('blockchain') || t.includes('web3')) return { icon: Blocks, bg: 'from-amber-500 to-yellow-600' }
+  if (t.includes('iot') || t.includes('embedded')) return { icon: Radio, bg: 'from-teal-500 to-emerald-600' }
+  if (t.includes('game')) return { icon: Gamepad2, bg: 'from-violet-600 to-indigo-700' }
+  if (t.includes('power bi') || t.includes('business')) return { icon: PieChart, bg: 'from-amber-600 to-orange-600' }
+  if (t.includes('product')) return { icon: Target, bg: 'from-indigo-600 to-violet-700' }
+  if (t.includes('marketing')) return { icon: Megaphone, bg: 'from-rose-500 to-orange-500' }
+  if (t.includes('finance') || t.includes('valuation')) return { icon: Landmark, bg: 'from-emerald-600 to-green-700' }
+  if (t.includes('hr') || t.includes('talent')) return { icon: Users, bg: 'from-sky-500 to-cyan-600' }
+  if (t.includes('supply') || t.includes('logistics')) return { icon: Truck, bg: 'from-amber-600 to-orange-700' }
+  if (t.includes('big data') || t.includes('spark')) return { icon: Database, bg: 'from-blue-700 to-indigo-800' }
+  if (t.includes('ar') || t.includes('vr') || t.includes('virtual')) return { icon: Glasses, bg: 'from-purple-600 to-pink-600' }
+  if (t.includes('bio')) return { icon: Dna, bg: 'from-teal-600 to-cyan-700' }
+  if (t.includes('test') || t.includes('sdet')) return { icon: CheckSquare, bg: 'from-emerald-600 to-teal-700' }
+  return { icon: Laptop2, bg: 'from-blue-600 to-indigo-600' }
+}
+
+const mobileWhyChoose = [
+  {
+    title: 'Industry-Relevant Curriculum',
+    desc: 'Updated for 2026 tech stacks',
+    icon: BookOpen,
+    color: 'text-violet-600 dark:text-violet-400',
+    bg: 'bg-violet-50 dark:bg-violet-950/60'
+  },
+  {
+    title: 'Hands-on Live Projects',
+    desc: 'Real enterprise production code',
+    icon: Laptop2,
+    color: 'text-indigo-600 dark:text-indigo-400',
+    bg: 'bg-indigo-50 dark:bg-indigo-950/60'
+  },
+  {
+    title: 'Certification & Recognition',
+    desc: 'Tamper-proof QR-verified credential',
+    icon: CheckCircle,
+    color: 'text-blue-600 dark:text-blue-400',
+    bg: 'bg-blue-50 dark:bg-blue-950/60'
+  },
+  {
+    title: 'Career Guidance & Mentorship',
+    desc: '1-on-1 reviews with MNC mentors',
+    icon: Users,
+    color: 'text-amber-600 dark:text-amber-400',
+    bg: 'bg-amber-50 dark:bg-amber-950/60'
+  }
+]
+
 export default function Programs() {
   const [search, setSearch] = useState('')
   const [selectedDomain, setSelectedDomain] = useState('All')
   const [selectedLevel, setSelectedLevel] = useState('All Levels')
   const [activeCourseModal, setActiveCourseModal] = useState(null)
+  const [mobileCategory, setMobileCategory] = useState('all')
 
   const filtered = trending20Programs.filter(p => {
     const matchSearch = p.title.toLowerCase().includes(search.toLowerCase()) || p.domain.toLowerCase().includes(search.toLowerCase()) || p.skills.some(s => s.toLowerCase().includes(search.toLowerCase()))
@@ -465,8 +548,21 @@ export default function Programs() {
     return matchSearch && matchDomain && matchLevel
   })
 
+  const mobileFiltered = filtered.filter(p => {
+    if (mobileCategory === 'all') return true
+    const t = p.title.toLowerCase()
+    const d = p.domain.toLowerCase()
+    if (mobileCategory === 'development') return d === 'technical' || t.includes('web') || t.includes('full stack') || t.includes('app')
+    if (mobileCategory === 'data') return d === 'analytics' || t.includes('data')
+    if (mobileCategory === 'cloud') return t.includes('cloud') || t.includes('devops') || t.includes('cyber')
+    if (mobileCategory === 'ai') return t.includes('ai') || t.includes('artificial') || t.includes('neural')
+    return true
+  })
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#0B0B1A]">
+      {/* ── Desktop View (100% Unchanged) ── */}
+      <div className="hidden lg:block">
       {/* Animated Hero Header */}
       <div className="bg-gradient-to-br from-violet-950 via-indigo-900 to-[#0B0B1A] py-20 px-6 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.08)_1px,transparent_0)] bg-[size:32px_32px]" />
@@ -662,8 +758,8 @@ export default function Programs() {
                   <BookOpen size={14} className="group-hover/btn:animate-bounce" /> View Modules &amp; Syllabus
                   <ArrowRight size={12} className="group-hover/btn:translate-x-1 transition-transform" />
                 </button>
-                <Link to="/pricing" className="btn-primary !py-2.5 w-full !justify-center !text-xs shadow-md">
-                  Enroll Now <ArrowRight size={12} />
+                <Link to="/pricing" className="btn-primary w-full justify-center">
+                  Enroll Now <ArrowRight size={14} />
                 </Link>
               </div>
             </motion.div>
@@ -680,22 +776,223 @@ export default function Programs() {
           </div>
         )}
       </div>
+      </div>
 
-      {/* DETAILED INTERACTIVE MODULE SYLLABUS MODAL */}
-      <AnimatePresence>
-        {activeCourseModal && (
-          <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm overflow-y-auto"
-            onClick={() => setActiveCourseModal(null)}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.90, y: 40 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.90, y: 40 }}
-              transition={{ type: 'spring', stiffness: 280, damping: 28 }}
-              onClick={(e) => e.stopPropagation()}
-              className="bg-white dark:bg-[#13132B] rounded-3xl max-w-3xl w-full border border-gray-200 dark:border-gray-800 shadow-2xl relative my-8 overflow-hidden"
+      {/* ── Mobile Programs View (Matches Reference Screen 2) ── */}
+      <div className="block lg:hidden py-6 px-4 bg-slate-50 dark:bg-[#070E1E] text-slate-900 dark:text-white transition-colors">
+        {/* Header */}
+        <div className="text-center mb-5">
+          <span className="text-[11px] font-extrabold tracking-[0.2em] text-violet-600 dark:text-violet-400 uppercase block mb-1.5">
+            EXPLORE PROGRAMS
+          </span>
+          <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight mb-2">
+            Learn In-Demand <br />
+            Skills with MIVEXO
+          </h1>
+          <p className="text-xs text-slate-600 dark:text-slate-400 max-w-xs mx-auto leading-relaxed">
+            Choose from industry-focused programs designed to make you job-ready.
+          </p>
+        </div>
+
+        {/* Compact Mobile Search Input */}
+        <div className="relative mb-4">
+          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Search all 20 industry tracks..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full pl-9 pr-3.5 py-2.5 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white placeholder-slate-400 text-xs shadow-xs focus:outline-none focus:border-violet-500"
+          />
+        </div>
+
+        {/* Category Filter Chips */}
+        <div className="flex items-center justify-start gap-1.5 mb-6 overflow-x-auto scrollbar-hide py-1">
+          {[
+            { id: 'all', label: 'All' },
+            { id: 'development', label: 'Development' },
+            { id: 'data', label: 'Data' },
+            { id: 'cloud', label: 'Cloud' },
+            { id: 'ai', label: 'AI' }
+          ].map((cat) => {
+            const isActive = mobileCategory === cat.id
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setMobileCategory(cat.id)}
+                className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all shrink-0 cursor-pointer ${
+                  isActive
+                    ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-sm'
+                    : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+                }`}
+              >
+                {cat.label}
+              </button>
+            )
+          })}
+        </div>
+
+        {/* 2-Column Course Cards Grid */}
+        <div className="grid grid-cols-2 gap-3 mb-8">
+          {mobileFiltered.map((prog, idx) => {
+            const { icon: CourseIcon, bg: iconBg } = getCourseIconAndBg(prog)
+            const isPopular = prog.tag?.toLowerCase().includes('trending') || idx === 0
+            return (
+              <motion.div
+                key={prog.id || idx}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.25, delay: idx * 0.03 }}
+                onClick={() => setActiveCourseModal(prog)}
+                className="group relative flex flex-col justify-between h-full p-3.5 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 shadow-xs hover:shadow-md transition-all text-left cursor-pointer"
+              >
+                <div>
+                  {/* Top: 3D-styled Icon + Popular Pill */}
+                  <div className="flex items-start justify-between mb-3">
+                    <div
+                      className={`w-10 h-10 rounded-xl bg-gradient-to-br ${iconBg} text-white flex items-center justify-center shadow-xs`}
+                    >
+                      <CourseIcon size={20} />
+                    </div>
+
+                    {isPopular && (
+                      <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-violet-100 dark:bg-violet-950/70 text-violet-700 dark:text-violet-300 border border-violet-200 dark:border-violet-800">
+                        Popular
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-xs font-black text-slate-900 dark:text-white leading-snug line-clamp-2 mb-1 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
+                    {prog.title}
+                  </h3>
+
+                  {/* Short Description */}
+                  <p className="text-[10px] text-slate-500 dark:text-slate-400 font-normal leading-relaxed line-clamp-2 mb-3">
+                    {prog.description}
+                  </p>
+                </div>
+
+                {/* Bottom: Tags + Circular Arrow */}
+                <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between mt-auto">
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-[9px] font-semibold text-slate-500 dark:text-slate-400">
+                      {prog.duration}
+                    </span>
+                    <span className="text-[9px] font-bold text-violet-600 dark:text-violet-400">
+                      {prog.level}
+                    </span>
+                  </div>
+
+                  <span className="w-6 h-6 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 flex items-center justify-center group-hover:bg-violet-600 dark:group-hover:bg-violet-400 dark:group-hover:text-white transition-colors shrink-0 shadow-xs">
+                    <ArrowRight size={11} className="group-hover:translate-x-0.5 transition-transform" />
+                  </span>
+                </div>
+              </motion.div>
+            )
+          })}
+        </div>
+
+        {mobileFiltered.length === 0 && (
+          <div className="text-center py-12">
+            <BookOpen size={36} className="text-slate-300 dark:text-slate-700 mx-auto mb-2" />
+            <p className="text-slate-500 text-xs">No programs match "{search}".</p>
+            <button
+              onClick={() => { setSearch(''); setMobileCategory('all') }}
+              className="mt-2 text-violet-600 text-xs font-bold hover:underline"
             >
+              Reset Search
+            </button>
+          </div>
+        )}
+
+        {/* ── Dark Callout Banner: Work on Live Projects (Matches Screen 2) ── */}
+        <div className="relative rounded-2xl bg-gradient-to-br from-[#0c1328] via-[#0f172a] to-[#1e1b4b] p-5 text-white overflow-hidden shadow-xl mb-10 border border-indigo-900/50">
+          <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-violet-600/20 blur-2xl pointer-events-none" />
+
+          <div className="relative z-10 flex flex-col gap-3">
+            <span className="text-[10px] font-extrabold uppercase tracking-widest text-violet-300">
+              REAL-WORLD EXPERIENCE
+            </span>
+
+            <h3 className="text-xl font-black leading-tight text-white">
+              Work on Live Projects
+            </h3>
+
+            <p className="text-xs text-slate-300 leading-relaxed max-w-xs">
+              Build a portfolio that stands out with guidance from industry experts.
+            </p>
+
+            <div className="pt-2">
+              <Link
+                to="/pricing"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-slate-900 text-xs font-bold shadow-md hover:bg-slate-100 active:scale-95 transition-all"
+              >
+                <span>Know More</span>
+                <ArrowRight size={13} />
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Why Choose MIVEXO? 2x2 Grid (Matches Screen 2) ── */}
+        <div className="text-center mb-6">
+          <h3 className="text-xl font-black text-slate-900 dark:text-white tracking-tight mb-4">
+            Why Choose MIVEXO?
+          </h3>
+
+          <div className="grid grid-cols-2 gap-2.5">
+            {mobileWhyChoose.map((feat, idx) => {
+              const Icon = feat.icon
+              return (
+                <div
+                  key={idx}
+                  className="p-3.5 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 shadow-xs flex flex-col items-center text-center"
+                >
+                  <div
+                    className={`w-9 h-9 rounded-xl ${feat.bg} ${feat.color} flex items-center justify-center mb-2 shadow-xs`}
+                  >
+                    <Icon size={18} />
+                  </div>
+                  <h4 className="text-xs font-black text-slate-900 dark:text-white leading-snug">
+                    {feat.title}
+                  </h4>
+                  <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-1 leading-tight">
+                    {feat.desc}
+                  </p>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* MOBILE SYLLABUS MODAL (Matches Animated Mobile Module View) */}
+      <div className="block lg:hidden">
+        {activeCourseModal && (
+          <MobileSyllabusModal
+            course={activeCourseModal}
+            onClose={() => setActiveCourseModal(null)}
+          />
+        )}
+      </div>
+
+      {/* DESKTOP DETAILED INTERACTIVE MODULE SYLLABUS MODAL */}
+      <div className="hidden lg:block">
+        <AnimatePresence>
+          {activeCourseModal && (
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm overflow-y-auto"
+              onClick={() => setActiveCourseModal(null)}
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.90, y: 40 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.90, y: 40 }}
+                transition={{ type: 'spring', stiffness: 280, damping: 28 }}
+                onClick={(e) => e.stopPropagation()}
+                className="bg-white dark:bg-[#13132B] rounded-3xl max-w-3xl w-full border border-gray-200 dark:border-gray-800 shadow-2xl relative my-8 overflow-hidden"
+              >
               {/* Modal Banner Header */}
               <div className="relative h-52 bg-slate-900 overflow-hidden">
                 <motion.img
@@ -918,11 +1215,11 @@ export default function Programs() {
                 <div className="flex gap-3 shrink-0">
                   <button
                     onClick={() => setActiveCourseModal(null)}
-                    className="px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors"
+                    className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors"
                   >
                     Close
                   </button>
-                  <Link to="/pricing" className="btn-primary !py-2.5 !px-6 !text-xs shadow-md">
+                  <Link to="/pricing" className="btn-primary">
                     Apply Now <ArrowRight size={14} />
                   </Link>
                 </div>
@@ -931,6 +1228,7 @@ export default function Programs() {
           </div>
         )}
       </AnimatePresence>
+      </div>
     </div>
   )
 }

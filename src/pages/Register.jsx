@@ -163,7 +163,7 @@ export default function Register() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full mt-3 py-4 px-4 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-black text-sm flex items-center justify-center gap-2 shadow-xl shadow-violet-500/25 transition-all hover:scale-[1.01] disabled:opacity-60 cursor-pointer"
+                  className="w-full mt-3 py-3 px-4 rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-md shadow-violet-500/20 hover:shadow-lg hover:shadow-violet-500/30 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 cursor-pointer"
                 >
                   {loading ? (
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -243,13 +243,13 @@ export default function Register() {
               <div className="flex flex-col gap-3">
                 <Link
                   to="/login"
-                  className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-xl shadow-violet-500/25 transition-all"
+                  className="btn-primary w-full justify-center"
                 >
                   <BookOpen size={16} /> Go to LMS Portal Login (Paid Members)
                 </Link>
                 <Link
                   to="/"
-                  className="w-full py-3 px-4 rounded-xl border-2 border-gray-300 dark:border-gray-600 hover:border-violet-500 text-slate-700 dark:text-slate-200 font-bold text-xs transition-colors"
+                  className="btn-secondary w-full justify-center"
                 >
                   Return to Home
                 </Link>

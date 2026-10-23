@@ -9,7 +9,6 @@ import mivexoLogo from '../../assets/mivexo_logo.png'
 const navLinks = [
   { label: 'Programs', href: '/programs' },
   { label: 'LMS Portal', href: '/lms' },
-  { label: 'Job Portal', href: '/jobs' },
   { label: 'Placement Prep', href: '/placement' },
   // Certificate page removed per request
   { label: 'Ambassador', href: '/ambassador' },
@@ -42,13 +41,11 @@ export default function Navbar() {
       <nav className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center group py-1">
-          <div className="dark:bg-white dark:px-2.5 dark:py-1 dark:rounded-xl transition-all">
-            <img
-              src={mivexoLogo}
-              alt="MIVEXO"
-              className="h-8 md:h-9 w-auto object-contain group-hover:scale-105 transition-transform"
-            />
-          </div>
+          <img
+            src={mivexoLogo}
+            alt="MIVEXO"
+            className="h-8 md:h-9 w-auto object-contain group-hover:scale-105 transition-transform dark:brightness-0 dark:invert"
+          />
         </Link>
 
         {/* Desktop Nav */}
@@ -73,7 +70,7 @@ export default function Navbar() {
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            className="btn-ghost"
             aria-label="Toggle theme"
           >
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
@@ -83,7 +80,7 @@ export default function Navbar() {
             <div className="relative">
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-violet-50 dark:bg-violet-900/40 border border-violet-200 dark:border-violet-700 hover:border-violet-400 transition-colors"
+                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-violet-50 dark:bg-violet-900/40 border border-violet-200 dark:border-violet-700 hover:border-violet-400 transition-colors"
               >
                 <div className="w-6 h-6 rounded-full bg-gradient-to-br from-violet-500 to-indigo-500 flex items-center justify-center text-white text-xs font-bold">
                   {user?.name?.[0]?.toUpperCase()}
@@ -109,7 +106,7 @@ export default function Navbar() {
                     )}
                     <button
                       onClick={() => { logout(); navigate('/'); setUserMenuOpen(false) }}
-                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                      className="btn-danger w-full flex items-center gap-2.5 px-4 py-2.5"
                     >
                       <LogOut size={16} /> Logout
                     </button>
@@ -121,7 +118,7 @@ export default function Navbar() {
             <div className="hidden md:flex items-center gap-2.5">
               <Link
                 to="/pricing"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs md:text-sm font-bold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 shadow-md shadow-violet-500/20 hover:scale-105 transition-all"
+                className="btn-primary"
               >
                 Enroll Now
               </Link>
@@ -131,7 +128,7 @@ export default function Navbar() {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden p-2 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            className="lg:hidden btn-ghost"
           >
             {isOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -160,11 +157,11 @@ export default function Navbar() {
               <div className="pt-3 border-t border-gray-200 dark:border-gray-800 flex flex-col gap-2.5">
                 {isAuthenticated ? (
                   <>
-                    <Link to="/lms" className="btn-primary !justify-center font-bold">Open LMS Portal</Link>
-                    <button onClick={logout} className="btn-secondary !justify-center font-bold">Logout</button>
+                    <Link to="/lms" className="btn-primary w-full justify-center">Open LMS Portal</Link>
+                    <button onClick={logout} className="btn-danger w-full justify-center">Logout</button>
                   </>
                 ) : (
-                  <Link to="/pricing" className="btn-primary !justify-center font-bold">
+                  <Link to="/pricing" className="btn-primary w-full justify-center">
                     Enroll Now
                   </Link>
                 )}

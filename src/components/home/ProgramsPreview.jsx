@@ -137,8 +137,8 @@ export default function ProgramsPreview() {
                   </span>
                   <span className="block text-[10px] text-gray-400 uppercase tracking-wider">With Live Project</span>
                 </div>
-                <Link to="/programs" className="btn-primary !py-2 !px-4 !text-xs shadow-md">
-                  View Syllabus <ArrowRight size={12} />
+                <Link to="/programs" className="btn-primary">
+                  View Syllabus <ArrowRight size={14} />
                 </Link>
               </div>
             </motion.div>
@@ -146,7 +146,7 @@ export default function ProgramsPreview() {
         </div>
 
         <div className="text-center">
-          <Link to="/programs" className="btn-primary !px-8 !py-3.5 shadow-xl">
+          <Link to="/programs" className="btn-primary">
             Explore All 20 Trending Domains &amp; Modules <ArrowRight size={16} />
           </Link>
         </div>

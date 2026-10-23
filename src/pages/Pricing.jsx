@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
   Check,
@@ -33,13 +34,17 @@ import {
   Database,
   Glasses,
   Dna,
-  CheckSquare
+  CheckSquare,
+  ExternalLink,
+  BookOpen
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import api from '../lib/api'
 import { useAuth } from '../context/AuthContext'
+import MobilePricing from '../components/mobile/MobilePricing'
 
 const PAYMENT_LINKS = {
+  lms: 'https://rzp.io/rzp/KEDQZrF',         // ₹1,000 pre-register
   foundation: 'https://rzp.io/rzp/KEDQZrF', // ₹3,000
   advanced: 'https://rzp.io/rzp/WCFgB2HX'   // ₹3,500
 }
@@ -212,73 +217,105 @@ const courseOptions = {
   ]
 }
 
+// LMS pre-register shows all 20 tracks merged
+courseOptions.lms = [...courseOptions.foundation, ...courseOptions.advanced]
+
 const plans = [
+  {
+    key: 'lms',
+    label: 'LMS Pre-Register',
+    badge: 'Early Access',
+    price: '₹1,000',
+    amountNum: 1000,
+    paymentUrl: PAYMENT_LINKS.lms,
+    popular: false,
+    isPreRegister: true,
+    theme: {
+      accentText: 'text-gray-900 dark:text-white',
+      badgeBg: 'bg-gray-100 dark:bg-white/10 border-gray-200 dark:border-white/20 text-gray-800 dark:text-white',
+      gradientBtn: 'from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600',
+      cardGlow: 'hover:border-gray-400 dark:hover:border-white/20 shadow-sm',
+      activeRing: 'ring-slate-950 dark:ring-white border-slate-950 dark:border-white shadow-xl',
+      priceColor: 'from-gray-900 via-gray-700 to-gray-900 dark:from-white dark:via-slate-200 dark:to-slate-400'
+    },
+    description: 'Secure your LMS seat early at a lower price. Pay the balance when your cohort launches.',
+    features: [
+      'Reserved LMS seat — guaranteed access',
+      'Early bird discount on full program price',
+      'Email confirmation & seat number assigned',
+      'Full enrollment on cohort launch date'
+    ]
+  },
   {
     key: 'foundation',
     label: 'Foundation',
-    badge: 'Non-Technical Specializations',
+    badge: '8 Specialization Tracks',
     price: '₹3,000',
     amountNum: 3000,
     paymentUrl: PAYMENT_LINKS.foundation,
     popular: false,
     theme: {
-      accentText: 'text-cyan-400',
-      badgeBg: 'bg-cyan-500/10 border-cyan-500/30 text-cyan-300',
-      gradientBtn: 'from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500',
-      cardGlow: 'hover:border-cyan-500/60 shadow-cyan-500/10',
-      activeRing: 'ring-cyan-500 border-cyan-500 shadow-cyan-500/20',
-      priceColor: 'from-cyan-300 via-blue-300 to-indigo-300'
+      accentText: 'text-gray-900 dark:text-white',
+      badgeBg: 'bg-gray-100 dark:bg-white/10 border-gray-200 dark:border-white/20 text-gray-800 dark:text-white',
+      gradientBtn: 'from-slate-800 to-slate-900 hover:from-slate-700 hover:to-slate-800',
+      cardGlow: 'hover:border-gray-400 dark:hover:border-white/20 shadow-sm',
+      activeRing: 'ring-slate-950 dark:ring-white border-slate-950 dark:border-white shadow-xl',
+      priceColor: 'from-gray-900 via-gray-700 to-gray-900 dark:from-white dark:via-slate-200 dark:to-slate-400'
     },
-    description: '8 Industry specializations across Business, Analytics, Design, Growth & Operations.',
+    description: 'Business, Analytics, Design, Growth & Operations — 8 industry tracks.',
     features: [
-      'Complete LMS Access across all curriculum modules',
+      'Complete LMS Access across all modules',
       'Verified Internship Experience Letter',
-      'Cryptographic QR-Verified Certificate',
+      'QR-Verified Certificate',
       'Placement Question Bank (10,000+ MCQs)',
-      'Live weekly mentor review webinars',
-      'Permanent lifetime alumni community access'
+      'Live weekly mentor webinars',
+      'Lifetime alumni community access'
     ]
   },
   {
     key: 'advanced',
     label: 'Advanced',
-    badge: 'Technical & Engineering Specializations',
+    badge: '12 Engineering Tracks',
     price: '₹3,500',
     amountNum: 3500,
     paymentUrl: PAYMENT_LINKS.advanced,
     popular: true,
     theme: {
-      accentText: 'text-amber-400',
-      badgeBg: 'bg-amber-500/15 border-amber-500/40 text-amber-300',
-      gradientBtn: 'from-amber-500 via-orange-500 to-rose-600 hover:from-amber-400 hover:to-rose-500 text-slate-950',
-      cardGlow: 'hover:border-amber-500/60 shadow-amber-500/15',
-      activeRing: 'ring-amber-500 border-amber-400 shadow-amber-500/25',
-      priceColor: 'from-amber-300 via-orange-300 to-rose-300'
+      accentText: 'text-gray-900 dark:text-white',
+      badgeBg: 'bg-gray-100 dark:bg-white/10 border-gray-200 dark:border-white/20 text-gray-800 dark:text-white',
+      gradientBtn: 'from-slate-800 to-slate-900 hover:from-slate-700 hover:to-slate-800',
+      cardGlow: 'hover:border-gray-400 dark:hover:border-white/20 shadow-sm',
+      activeRing: 'ring-slate-950 dark:ring-white border-slate-950 dark:border-white shadow-xl',
+      priceColor: 'from-gray-900 via-gray-700 to-gray-900 dark:from-white dark:via-slate-200 dark:to-slate-400'
     },
-    description: '12 Production-level engineering tracks with live code reviews and deployment.',
+    description: '12 production-level engineering tracks with live code reviews & deployment.',
     features: [
-      'Complete LMS Access with source code repositories',
+      'Complete LMS Access with source code repos',
       '1-on-1 Code Reviews & Architect Guidance',
       'Verified Internship Experience Letter',
-      'Cryptographic QR-Verified Engineering Credential',
+      'QR-Verified Engineering Credential',
       'Placement Question Bank (10,000+ MCQs)',
-      'Permanent lifetime alumni community access'
+      'Lifetime alumni community access'
     ]
   }
 ]
 
 const faqs = [
   {
+    q: 'What is LMS Pre-Register?',
+    a: 'Pay ₹1,000 now to secure your seat before the cohort opens. You get a guaranteed LMS slot and pay the balance (₹2,000 or ₹2,500) when the batch launches. No extra charges beyond the full program price.'
+  },
+  {
     q: 'How does enrollment work?',
-    a: 'Simply enter your name, email, and phone number, choose any of our 20 tracks, and click ENROLL NOW. You will instantly be redirected to our secure Razorpay checkout page to complete payment via UPI, Card, or Net Banking.'
+    a: 'Enter your name, email, and phone, select a plan, and click Enroll Now. You are redirected to our secure Razorpay checkout to pay via UPI, Card, or Net Banking.'
   },
   {
-    q: 'Are all 20 tracks included under these two prices?',
-    a: 'Yes! Every technical track is ₹3,500 and non-technical track is ₹3,000. There are zero extra examination, registration, or certificate release charges.'
+    q: 'Are all 20 tracks under these prices?',
+    a: 'Yes — Foundation (₹3,000) covers 8 tracks and Advanced (₹3,500) covers 12 engineering tracks. Zero extra examination, registration, or certificate charges.'
   },
   {
-    q: 'When do I get my verified Internship Letter and Certificate?',
-    a: 'Upon completing your hands-on capstone project within your track, your official verified internship letter and QR-cryptographic certificate are generated.'
+    q: 'When do I get my Internship Letter and Certificate?',
+    a: 'After completing your capstone project, your QR-verified internship letter and credential are issued instantly through the LMS.'
   }
 ]
 
@@ -297,11 +334,13 @@ export default function Pricing() {
   })
 
   const currentPlan = plans.find((p) => p.key === selectedPlanKey)
-  const availableCourses = courseOptions[selectedPlanKey]
+  const availableCourses = courseOptions[selectedPlanKey] || courseOptions.advanced
 
   const handlePlanSelect = (key) => {
     setSelectedPlanKey(key)
-    setSelectedCourse(courseOptions[key][0])
+    if (courseOptions[key]) {
+      setSelectedCourse(courseOptions[key][0])
+    }
     if (formRef.current) {
       formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
@@ -328,7 +367,7 @@ export default function Pricing() {
           email: formData.email,
           phone: formData.phone,
           password: 'Password@123',
-          domain: selectedCourse.name,
+          domain: selectedCourse?.name || `${currentPlan.label} Specialization Track`,
           plan: currentPlan.key,
           amount: currentPlan.amountNum
         })
@@ -352,338 +391,422 @@ export default function Pricing() {
   }
 
   return (
-    <div className="min-h-screen bg-[#070913] text-slate-100 selection:bg-amber-500 selection:text-slate-950 relative overflow-hidden">
-      {/* Radiant Glow Mesh */}
+    <>
+      {/* Desktop Pricing: Clean, spacious layout for large screens */}
+      <div className="hidden lg:block w-full">
+        <div className="min-h-screen bg-white dark:bg-[#070913] text-gray-900 dark:text-slate-100 selection:bg-violet-600 selection:text-white relative overflow-hidden transition-colors duration-300">
+      {/* Background Glow */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute -top-32 left-1/4 w-[600px] h-[500px] bg-gradient-to-br from-blue-600/20 via-cyan-500/15 to-transparent blur-3xl rounded-full" />
-        <div className="absolute top-1/4 right-10 w-[500px] h-[500px] bg-gradient-to-bl from-amber-500/15 via-rose-500/10 to-transparent blur-3xl rounded-full" />
-        <div className="absolute bottom-10 left-1/3 w-[650px] h-[450px] bg-indigo-600/15 blur-3xl rounded-full" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.04)_1px,transparent_0)] bg-[size:28px_28px]" />
+        <div className="absolute -top-32 left-1/4 w-[700px] h-[600px] bg-gradient-to-br from-violet-500/8 dark:from-violet-600/20 via-indigo-500/5 dark:via-indigo-500/15 to-transparent blur-3xl rounded-full" />
+        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-amber-400/6 dark:from-amber-500/12 via-orange-400/4 dark:via-rose-500/8 to-transparent blur-3xl rounded-full" />
+        <div className="absolute bottom-10 left-1/3 w-[600px] h-[400px] bg-cyan-500/4 dark:bg-indigo-600/12 blur-3xl rounded-full" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(109,40,217,0.04)_1px,transparent_0)] dark:bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.04)_1px,transparent_0)] bg-[size:28px_28px]" />
       </div>
 
       <div className="relative z-10">
         {/* HEADER */}
-        <section className="pt-24 pb-12 px-6 text-center">
+        <section className="pt-20 pb-6 px-4 sm:pt-24 sm:pb-12 sm:px-6 text-center">
           <div className="max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/90 border border-slate-700/80 text-xs sm:text-sm font-semibold mb-6 shadow-xl"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-violet-50 dark:bg-violet-950/50 border border-violet-200 dark:border-violet-800/60 text-[11px] font-semibold mb-4 sm:mb-6"
             >
-              <Sparkles size={14} className="text-amber-400" />
-              <span className="bg-gradient-to-r from-cyan-400 via-amber-300 to-rose-400 bg-clip-text text-transparent font-bold">
-                20 Certified Specialization Tracks · Verified Internship Credentials
-              </span>
+              <BadgeCheck size={12} className="text-violet-500" />
+              <span className="text-violet-700 dark:text-violet-300">20 Certified Tracks · Verified Credentials</span>
             </motion.div>
 
             <motion.h1
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight mb-5"
+              className="text-2xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight mb-3 sm:mb-5 text-gray-900 dark:text-white"
             >
-              Choose Your Track. <br />
-              <span className="bg-gradient-to-r from-cyan-400 via-blue-300 to-amber-300 bg-clip-text text-transparent">
-                One All-Inclusive Pass.
-              </span>
+              Simple,{' '}
+              <span className="bg-gradient-to-r from-violet-600 via-indigo-600 to-violet-500 bg-clip-text text-transparent">
+                Transparent
+              </span>{' '}
+              Pricing
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15 }}
-              className="text-slate-300 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-6 font-normal"
+              className="hidden sm:block text-gray-500 dark:text-slate-400 text-sm sm:text-base max-w-xl mx-auto leading-relaxed mb-6"
             >
-              All 20 programs available. Select between <strong className="text-cyan-300">Foundation (₹3,000)</strong> or <strong className="text-amber-300">Advanced (₹3,500)</strong>, pick your track, and complete enrollment.
+              Select Foundation (₹3,000) or Advanced (₹3,500), pick your track, and enroll in minutes.
             </motion.p>
 
-            <div className="flex flex-wrap items-center justify-center gap-6 text-xs sm:text-sm text-slate-400 font-medium">
-              <span className="flex items-center gap-1.5 text-slate-200">
-                <BadgeCheck size={16} className="text-cyan-400" /> 20 Certified Tracks
+            <div className="hidden sm:flex flex-wrap items-center justify-center gap-6 text-xs text-gray-500 dark:text-slate-400 font-medium">
+              <span className="flex items-center gap-1.5">
+                <BadgeCheck size={14} className="text-violet-500" /> 20 Certified Tracks
               </span>
-              <span className="flex items-center gap-1.5 text-slate-200">
-                <Star size={16} className="text-amber-400 fill-amber-400" /> 4.9/5 Rating
+              <span className="w-px h-3 bg-gray-300 dark:bg-slate-700" />
+              <span className="flex items-center gap-1.5">
+                <Star size={14} className="text-amber-400 fill-amber-400" /> 4.9/5 Rating
               </span>
-              <span className="flex items-center gap-1.5 text-slate-200">
-                <Zap size={16} className="text-rose-400" /> Instant LMS Access
+              <span className="w-px h-3 bg-gray-300 dark:bg-slate-700" />
+              <span className="flex items-center gap-1.5">
+                <Zap size={14} className="text-indigo-500" /> Instant LMS Access
               </span>
             </div>
           </div>
         </section>
 
         {/* PRICING CARDS */}
-        <section className="py-6 px-6 max-w-5xl mx-auto">
+        <section className="py-4 px-4 sm:py-6 sm:px-6 max-w-5xl mx-auto">
           {/* Plan Selector Toggle */}
-          <div className="flex justify-center mb-10">
-            <div className="p-1.5 bg-slate-900/90 border border-slate-800 rounded-2xl flex items-center gap-2 backdrop-blur-md shadow-2xl">
-              <button
-                type="button"
-                onClick={() => handlePlanSelect('foundation')}
-                className={`px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                  selectedPlanKey === 'foundation'
-                    ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg shadow-cyan-500/25'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                Foundation · ₹3,000 (8 Tracks)
-              </button>
-              <button
-                type="button"
-                onClick={() => handlePlanSelect('advanced')}
-                className={`px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                  selectedPlanKey === 'advanced'
-                    ? 'bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 text-slate-950 font-black shadow-lg shadow-amber-500/25'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                <Sparkles size={14} /> Advanced · ₹3,500 (12 Tracks)
-              </button>
+          <div className="flex justify-center mb-6 sm:mb-10">
+            <div className="p-1 bg-gray-100 dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl flex items-center gap-1 w-full max-w-sm sm:max-w-lg shadow-sm">
+              {plans.map((p) => (
+                <button
+                  key={p.key}
+                  type="button"
+                  onClick={() => handlePlanSelect(p.key)}
+                  className={`flex-1 py-2 px-2 sm:px-4 rounded-lg text-[11px] sm:text-xs font-semibold transition-all cursor-pointer text-center ${
+                    selectedPlanKey === p.key
+                      ? p.key === 'advanced'
+                        ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-md shadow-violet-500/25'
+                        : p.key === 'foundation'
+                          ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md shadow-cyan-500/20'
+                          : 'bg-slate-900 dark:bg-white text-white dark:text-slate-950 shadow-sm'
+                      : 'text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white'
+                  }`}
+                >
+                  <span className="sm:hidden block">{p.label.replace(' Pre-Register', '')}</span>
+                  <span className="hidden sm:block">{p.label} · {p.price}</span>
+                </button>
+              ))}
             </div>
           </div>
 
           {/* Cards Grid */}
-          <div className="grid md:grid-cols-2 gap-8 mb-16 items-stretch">
+          <div className="grid md:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12 items-stretch">
             {plans.map((p) => {
               const isSelected = selectedPlanKey === p.key
-              const trackCount = courseOptions[p.key].length
+              const trackCount = p.isPreRegister ? null : courseOptions[p.key]?.length
               return (
                 <motion.div
                   key={p.key}
-                  whileHover={{ y: -6 }}
-                  transition={{ duration: 0.25 }}
+                  whileHover={{ y: -4 }}
+                  transition={{ duration: 0.2 }}
                   onClick={() => handlePlanSelect(p.key)}
-                  className={`relative rounded-3xl p-8 sm:p-10 cursor-pointer flex flex-col justify-between transition-all duration-300 border backdrop-blur-xl ${
+                  className={`relative rounded-2xl p-5 sm:p-7 cursor-pointer flex flex-col justify-between transition-all duration-200 border overflow-hidden ${
                     isSelected
-                      ? `bg-slate-900/90 ${p.theme.activeRing} shadow-2xl ring-2 ring-offset-2 ring-offset-slate-950`
-                      : `bg-slate-900/40 border-slate-800 ${p.theme.cardGlow}`
+                      ? p.key === 'advanced'
+                        ? 'bg-gradient-to-b from-[#1a1040] to-[#0d0b1e] dark:from-[#1a1040] dark:to-[#070913] border-violet-500/50 shadow-2xl shadow-violet-500/20 ring-1 ring-violet-500/40'
+                        : p.key === 'foundation'
+                          ? 'bg-gradient-to-b from-[#0a1e2e] to-[#080f1c] dark:to-[#070913] border-cyan-500/40 shadow-2xl shadow-cyan-500/10 ring-1 ring-cyan-500/30'
+                          : 'bg-gradient-to-b from-slate-900 to-[#080d18] dark:to-[#070913] border-slate-500/40 shadow-2xl ring-1 ring-slate-400/20'
+                      : 'bg-white dark:bg-slate-900/50 border-gray-200 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-violet-200 dark:hover:border-slate-600'
                   }`}
                 >
                   {p.popular && (
-                    <div className="absolute -top-3.5 right-8">
-                      <span className="px-3.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-gradient-to-r from-amber-400 via-orange-400 to-rose-500 text-slate-950 shadow-md shadow-amber-500/30 flex items-center gap-1">
-                        <Sparkles size={12} /> Most Popular
+                    <div className="absolute -top-3 right-5 sm:right-7">
+                      <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-gradient-to-r from-violet-600 to-indigo-600 text-white flex items-center gap-1 shadow-md shadow-violet-500/30">
+                        <Sparkles size={9} /> Most Popular
+                      </span>
+                    </div>
+                  )}
+
+                  {p.isPreRegister && (
+                    <div className="absolute -top-3 left-5">
+                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-50 dark:bg-amber-900/40 border border-amber-300 dark:border-amber-600/50 text-amber-700 dark:text-amber-300">
+                        Early Bird
                       </span>
                     </div>
                   )}
 
                   <div>
-                    <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-start justify-between mb-2 sm:mb-3">
                       <div>
-                        <span className={`text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border ${p.theme.badgeBg} inline-block mb-3`}>
-                          {p.badge} ({trackCount} Tracks)
-                        </span>
-                        <h3 className="text-3xl font-black text-white">{p.label}</h3>
-                      </div>
-                      <div
-                        className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                        <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg border inline-block mb-2.5 ${
                           isSelected
                             ? p.key === 'advanced'
-                              ? 'border-amber-400 bg-amber-400 text-slate-950'
-                              : 'border-cyan-400 bg-cyan-400 text-slate-950'
-                            : 'border-slate-700'
+                              ? 'bg-violet-500/20 border-violet-500/40 text-violet-200'
+                              : p.key === 'foundation'
+                                ? 'bg-cyan-500/20 border-cyan-500/40 text-cyan-200'
+                                : 'bg-white/10 border-white/20 text-slate-300'
+                            : 'bg-gray-100 dark:bg-slate-800 border-gray-200 dark:border-slate-700 text-gray-700 dark:text-slate-300'
+                        }`}>
+                          {p.badge}
+                        </span>
+                        <h3 className={`text-xl sm:text-2xl font-black ${isSelected ? 'text-white' : 'text-gray-900 dark:text-white'}`}>{p.label}</h3>
+                      </div>
+                      <div
+                        className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all shrink-0 mt-1 ${
+                          isSelected
+                            ? p.key === 'advanced'
+                              ? 'border-violet-400 bg-violet-500 text-white shadow-sm shadow-violet-500/50'
+                              : p.key === 'foundation'
+                                ? 'border-cyan-400 bg-cyan-500 text-white shadow-sm shadow-cyan-500/50'
+                                : 'border-white bg-white text-slate-900'
+                            : 'border-gray-300 dark:border-slate-600'
                         }`}
                       >
-                        {isSelected && <Check size={14} strokeWidth={3.5} />}
+                        {isSelected && <Check size={11} strokeWidth={3} />}
                       </div>
                     </div>
 
-                    <p className="text-xs sm:text-sm text-slate-400 mb-6 leading-relaxed">
+                    <p className={`text-xs mb-4 leading-relaxed ${isSelected ? 'text-slate-300' : 'text-gray-500 dark:text-slate-400'}`}>
                       {p.description}
                     </p>
 
-                    <div className="flex items-baseline gap-2 pb-6 border-b border-slate-800/80 mb-6">
-                      <span className={`text-5xl font-black tracking-tight bg-gradient-to-r ${p.theme.priceColor} bg-clip-text text-transparent`}>
+                    <div className={`flex items-baseline gap-1.5 pb-4 border-b mb-4 ${isSelected ? 'border-white/10' : 'border-gray-200 dark:border-slate-800/60'}`}>
+                      <span className={`text-3xl sm:text-4xl font-black tracking-tight ${isSelected ? 'text-white' : 'text-gray-900 dark:text-white'}`}>
                         {p.price}
                       </span>
-                      <span className="text-xs font-semibold text-slate-400">/ one-time · all inclusive</span>
+                      <span className={`text-xs ${isSelected ? 'text-slate-400' : 'text-gray-400 dark:text-slate-500'}`}>{p.isPreRegister ? '/ reservation' : '/ one-time'}</span>
                     </div>
 
-                    <div className="space-y-3 mb-8">
-                      <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400">
-                        Included in this pass:
-                      </p>
+                    <div className="space-y-2 mb-5 sm:mb-6">
                       {p.features.map((feat, idx) => (
-                        <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-300">
-                          <Check size={16} className={`${p.theme.accentText} shrink-0 mt-0.5`} />
+                        <div key={idx} className={`flex items-start gap-2 text-xs ${isSelected ? 'text-slate-200' : 'text-gray-600 dark:text-slate-300'}`}>
+                          <div className={`shrink-0 mt-0.5 w-4 h-4 rounded-full flex items-center justify-center ${
+                            isSelected
+                              ? p.key === 'advanced'
+                                ? 'bg-violet-500/30 text-violet-200'
+                                : p.key === 'foundation'
+                                  ? 'bg-cyan-500/30 text-cyan-200'
+                                  : 'bg-white/20 text-white'
+                              : 'bg-violet-100 dark:bg-slate-800 text-violet-600 dark:text-slate-400'
+                          }`}>
+                            <Check size={9} strokeWidth={3} />
+                          </div>
                           <span>{feat}</span>
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  <div>
+                  <div className="space-y-2">
                     <button
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation()
                         handlePlanSelect(p.key)
                       }}
-                      className={`w-full py-4 rounded-2xl font-black text-sm flex items-center justify-center gap-2 shadow-xl transition-all cursor-pointer ${
+                      className={`w-full py-2.5 sm:py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer border ${
                         isSelected
-                          ? `bg-gradient-to-r ${p.theme.gradientBtn} shadow-lg`
-                          : 'bg-slate-800 text-slate-200 hover:bg-slate-700'
+                          ? p.key === 'advanced'
+                            ? 'bg-violet-600 hover:bg-violet-500 text-white shadow-lg shadow-violet-500/30 border-violet-500/50'
+                            : p.key === 'foundation'
+                              ? 'bg-cyan-600 hover:bg-cyan-500 text-white shadow-lg shadow-cyan-500/25 border-cyan-500/50'
+                              : 'bg-white text-slate-950 hover:bg-slate-100 shadow-md border-white/50'
+                          : 'bg-gray-50 dark:bg-slate-800 text-gray-700 dark:text-slate-300 hover:bg-violet-50 dark:hover:bg-slate-700 border-gray-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-slate-500'
                       }`}
                     >
-                      {isSelected ? '✓ Selected Track' : `Select ${p.label} (${p.price})`}
-                      <ArrowRight size={15} />
+                      {isSelected ? (
+                        <><Check size={14} /> Selected</>
+                      ) : (
+                        <>{p.isPreRegister ? 'Pre-Register' : `Select ${p.label}`} · {p.price}</>
+                      )}
                     </button>
+
+                    {/* LMS Login shortcut on the card */}
+                    {p.isPreRegister && (
+                      <Link
+                        to="/lms"
+                        onClick={(e) => e.stopPropagation()}
+                      className={`w-full py-2.5 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 border transition-all ${
+                        isSelected
+                          ? 'border-white/20 dark:border-white/20 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/10'
+                          : 'border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-400 hover:border-violet-300 dark:hover:border-slate-500 hover:text-violet-700 dark:hover:text-slate-200'
+                      }`}
+                      >
+                        <BookOpen size={14} /> Already enrolled? Login to LMS
+                      </Link>
+                    )}
                   </div>
                 </motion.div>
               )
             })}
           </div>
 
-          {/* REGISTRATION STUDIO WITH ALL 20 TRACKS */}
-          <div ref={formRef} className="max-w-4xl mx-auto scroll-mt-20">
-            <div className="relative rounded-3xl bg-slate-900/95 border border-slate-800 p-8 sm:p-12 backdrop-blur-2xl shadow-2xl overflow-hidden">
-              <div
-                className={`absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r ${
-                  currentPlan.key === 'advanced'
-                    ? 'from-amber-400 via-orange-500 to-rose-500'
-                    : 'from-cyan-400 via-blue-500 to-indigo-600'
-                }`}
-              />
+          {/* REGISTRATION STUDIO */}
+          <div ref={formRef} className="max-w-3xl mx-auto scroll-mt-20">
+            <div className="relative rounded-2xl bg-white dark:bg-slate-900/95 border border-gray-200 dark:border-slate-800 p-4 sm:p-8 md:p-10 overflow-hidden shadow-xl">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-violet-600 via-indigo-500 to-violet-600" />
 
               {/* Studio Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-8 mb-8 border-b border-slate-800">
+              <div className="flex items-center justify-between pb-4 sm:pb-6 mb-4 sm:mb-6 border-b border-gray-200 dark:border-slate-800">
                 <div>
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-slate-800 border border-slate-700 text-slate-300 mb-2">
-                    <Lock size={12} className={currentPlan.theme.accentText} />
-                    Instant Enrollment Desk
-                  </div>
-                  <h2 className="text-2xl sm:text-3xl font-black text-white">Enrollment Details</h2>
-                  <p className="text-xs sm:text-sm text-slate-400 mt-1">
-                    Select your program track from the cards below and enter your contact details.
+                  <h2 className="text-base sm:text-xl font-bold text-gray-900 dark:text-white">Complete Enrollment</h2>
+                  <p className="text-[11px] sm:text-xs text-gray-500 dark:text-slate-500 mt-0.5">
+                    {currentPlan.isPreRegister
+                      ? 'Reserve your LMS seat — pay ₹1,000 now'
+                      : 'Enter your details and proceed to payment'}
                   </p>
                 </div>
-
-                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex items-center gap-4 shrink-0">
-                  <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">Tier</span>
-                    <span className="text-sm font-black text-white">{currentPlan.label}</span>
-                  </div>
-                  <div className="h-8 w-px bg-slate-800" />
+                <div className="flex items-center gap-3 shrink-0">
                   <div className="text-right">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">Total Due</span>
-                    <span className={`text-xl font-black ${currentPlan.theme.accentText}`}>{currentPlan.price}</span>
+                    <span className="text-[10px] text-gray-500 dark:text-slate-500 block">Total</span>
+                    <span className={`text-lg font-bold ${currentPlan.theme.accentText}`}>{currentPlan.price}</span>
                   </div>
                 </div>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-8">
-                {/* 1. VISUAL COURSE SELECTION TILES - ALL AVAILABLE TRACKS */}
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <label className="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-200 flex items-center gap-2">
-                      <Layers size={16} className={currentPlan.theme.accentText} />
-                      1. Select Your Track ({availableCourses.length} Available in {currentPlan.label}):
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                {/* 1. COURSE SELECTION — desktop shows tiles for all plans; LMS shows a compact list on mobile too */}
+                <div className={currentPlan.isPreRegister ? 'block' : 'hidden lg:block'}>
+                  <div className="flex items-center justify-between mb-3">
+                    <label className="text-[11px] font-semibold uppercase tracking-wider text-gray-600 dark:text-slate-400 flex items-center gap-1.5">
+                      <Layers size={12} />
+                      {currentPlan.isPreRegister
+                        ? `Preferred Track (all ${availableCourses.length} available)`
+                        : `Select Track (${availableCourses.length} available)`}
                     </label>
-                    <span className="text-xs text-slate-400 font-medium">Click tile to choose</span>
+                    {!currentPlan.isPreRegister && (
+                      <span className="text-[11px] text-gray-500 dark:text-slate-500">Click to choose</span>
+                    )}
                   </div>
 
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-                    {availableCourses.map((c) => {
-                      const isChosen = selectedCourse.id === c.id
-                      const IconComponent = c.icon
-                      return (
-                        <motion.div
-                          key={c.id}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          onClick={() => setSelectedCourse(c)}
-                          className={`p-4 rounded-2xl cursor-pointer border transition-all duration-200 flex flex-col justify-between relative overflow-hidden ${
-                            isChosen
-                              ? currentPlan.key === 'advanced'
-                                ? 'bg-amber-950/20 border-amber-400/80 shadow-lg shadow-amber-500/10 ring-1 ring-amber-400'
-                                : 'bg-cyan-950/20 border-cyan-400/80 shadow-lg shadow-cyan-500/10 ring-1 ring-cyan-400'
-                              : 'bg-slate-950/60 border-slate-800 hover:border-slate-700'
-                          }`}
-                        >
-                          <div>
-                            <div className="flex items-start justify-between gap-2 mb-2">
-                              <div
-                                className={`w-8 h-8 rounded-xl flex items-center justify-center text-white shadow-md bg-gradient-to-br ${c.color}`}
-                              >
-                                <IconComponent size={16} />
-                              </div>
-                              <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
-                                {c.tag}
-                              </span>
-                            </div>
-                            <h4 className="text-xs sm:text-sm font-bold text-white mb-1 leading-snug">
-                              {c.name}
-                            </h4>
-                            <p className="text-[11px] text-slate-400 leading-tight">
-                              {c.stack}
-                            </p>
-                          </div>
+                  {/* LMS: compact scrollable list on mobile, tiles on desktop */}
+                  {currentPlan.isPreRegister ? (
+                    <>
+                      {/* Mobile: native select dropdown */}
+                      <div className="lg:hidden">
+                        <div className="relative">
+                          <select
+                            value={selectedCourse.id}
+                            onChange={(e) => {
+                              const found = availableCourses.find(c => c.id === e.target.value)
+                              if (found) setSelectedCourse(found)
+                            }}
+                            className="w-full appearance-none pl-3 pr-8 py-3 rounded-xl bg-gray-50 dark:bg-slate-950 border border-gray-300 dark:border-slate-800 text-gray-900 dark:text-white text-sm focus:outline-none focus:border-slate-900 dark:focus:border-slate-600 transition-colors cursor-pointer"
+                          >
+                            {availableCourses.map((c) => (
+                              <option key={c.id} value={c.id}>{c.name}</option>
+                            ))}
+                          </select>
+                          <ArrowRight size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-slate-500 rotate-90 pointer-events-none" />
+                        </div>
+                        {selectedCourse && (
+                          <p className="text-[11px] text-gray-500 dark:text-slate-500 mt-1.5 pl-1">{selectedCourse.stack}</p>
+                        )}
+                      </div>
 
-                          <div className="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between">
-                            <span className="text-[10px] text-slate-400 font-semibold">Verified Credential</span>
-                            <div
-                              className={`w-4 h-4 rounded-full border flex items-center justify-center text-[10px] ${
+                      {/* Desktop: tile grid */}
+                      <div className="hidden lg:grid lg:grid-cols-4 gap-2.5">
+                        {availableCourses.map((c) => {
+                          const isChosen = selectedCourse.id === c.id
+                          const IconComponent = c.icon
+                          return (
+                            <motion.div
+                              key={c.id}
+                              whileHover={{ scale: 1.01 }}
+                              whileTap={{ scale: 0.99 }}
+                              onClick={() => setSelectedCourse(c)}
+                              className={`p-3 rounded-xl cursor-pointer border transition-all duration-150 flex flex-col gap-1.5 ${
                                 isChosen
-                                  ? currentPlan.key === 'advanced'
-                                    ? 'bg-amber-400 border-amber-400 text-slate-950'
-                                    : 'bg-cyan-400 border-cyan-400 text-slate-950'
-                                  : 'border-slate-600'
+                                  ? 'bg-gray-100 dark:bg-slate-800 border-slate-950 dark:border-slate-600 ring-1 ring-slate-950 dark:ring-slate-500/60'
+                                  : 'bg-gray-50 dark:bg-slate-950 border-gray-200 dark:border-slate-800 hover:border-gray-400 dark:hover:border-slate-700'
                               }`}
                             >
-                              {isChosen && <Check size={10} strokeWidth={3} />}
+                              <div className="flex items-center justify-between">
+                                <div className={`w-6 h-6 rounded-md flex items-center justify-center text-white bg-gradient-to-br ${c.color}`}>
+                                  <IconComponent size={12} />
+                                </div>
+                                {isChosen && <Check size={11} className="text-gray-900 dark:text-slate-300" strokeWidth={2.5} />}
+                              </div>
+                              <p className="text-[10px] font-medium text-gray-800 dark:text-slate-300 leading-snug">{c.name}</p>
+                            </motion.div>
+                          )
+                        })}
+                      </div>
+                    </>
+                  ) : (
+                    // Foundation / Advanced: full tile grid (desktop only)
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                      {availableCourses.map((c) => {
+                        const isChosen = selectedCourse.id === c.id
+                        const IconComponent = c.icon
+                        return (
+                          <motion.div
+                            key={c.id}
+                            whileHover={{ scale: 1.01 }}
+                            whileTap={{ scale: 0.99 }}
+                            onClick={() => setSelectedCourse(c)}
+                            className={`p-3.5 rounded-xl cursor-pointer border transition-all duration-150 flex flex-col justify-between ${
+                              isChosen
+                                ? 'bg-gray-100 dark:bg-slate-800 border-slate-950 dark:border-white ring-1 ring-slate-950 dark:ring-white'
+                                : 'bg-gray-50 dark:bg-slate-950/60 border-gray-200 dark:border-slate-800 hover:border-gray-400 dark:hover:border-slate-700'
+                            }`}
+                          >
+                            <div>
+                              <div className="flex items-start justify-between gap-2 mb-2">
+                                <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-white bg-gradient-to-br ${c.color}`}>
+                                  <IconComponent size={14} />
+                                </div>
+                                <span className="text-[9px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-gray-200 dark:bg-slate-800 text-gray-700 dark:text-slate-400">
+                                  {c.tag}
+                                </span>
+                              </div>
+                              <h4 className="text-xs font-semibold text-gray-900 dark:text-white mb-1 leading-snug">{c.name}</h4>
+                              <p className="text-[10px] text-gray-500 dark:text-slate-500 leading-tight">{c.stack}</p>
                             </div>
-                          </div>
-                        </motion.div>
-                      )
-                    })}
-                  </div>
+
+                            <div className="mt-2.5 pt-2 border-t border-gray-200 dark:border-slate-800/60 flex items-center justify-between">
+                              <span className="text-[10px] text-gray-500 dark:text-slate-500">Verified Credential</span>
+                              <div className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center ${
+                                isChosen
+                                  ? 'bg-slate-950 dark:bg-white text-white dark:text-slate-950 border-slate-950 dark:border-white'
+                                  : 'border-gray-300 dark:border-slate-600'
+                              }`}>
+                                {isChosen && <Check size={8} strokeWidth={3} />}
+                              </div>
+                            </div>
+                          </motion.div>
+                        )
+                      })}
+                    </div>
+                  )}
                 </div>
 
                 {/* 2. STUDENT CONTACT FIELDS */}
                 <div>
-                  <div className="mb-4">
-                    <label className="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-200 flex items-center gap-2">
-                      <User size={16} className={currentPlan.theme.accentText} />
-                      2. Student Contact Details:
-                    </label>
-                  </div>
+                  <label className="text-[11px] font-semibold uppercase tracking-wider text-gray-600 dark:text-slate-400 flex items-center gap-1.5 mb-3">
+                    <User size={12} /> Contact Details
+                  </label>
 
-                  <div className="grid sm:grid-cols-3 gap-4">
+                  <div className="grid sm:grid-cols-3 gap-3">
                     <div>
-                      <label className="block text-xs font-bold text-slate-300 mb-1.5">Full Name *</label>
+                      <label className="block text-[11px] font-medium text-gray-700 dark:text-slate-400 mb-1">Full Name *</label>
                       <div className="relative">
-                        <User size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                        <User size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-600" />
                         <input
                           type="text"
                           name="name"
                           required
-                          placeholder="e.g. Murali V."
+                          placeholder="Your name"
                           value={formData.name}
                           onChange={handleInputChange}
-                          className="w-full pl-10 pr-3.5 py-3 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-cyan-500 transition-all font-medium"
+                          className="w-full pl-8 pr-3 py-2.5 rounded-lg bg-gray-50 dark:bg-slate-950 border border-gray-300 dark:border-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-600 text-xs sm:text-sm focus:outline-none focus:border-slate-900 dark:focus:border-slate-600 transition-colors"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-slate-300 mb-1.5">Email Address *</label>
+                      <label className="block text-[11px] font-medium text-gray-700 dark:text-slate-400 mb-1">Email *</label>
                       <div className="relative">
-                        <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                        <Mail size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-600" />
                         <input
                           type="email"
                           name="email"
                           required
-                          placeholder="murali@example.com"
+                          placeholder="you@example.com"
                           value={formData.email}
                           onChange={handleInputChange}
-                          className="w-full pl-10 pr-3.5 py-3 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-cyan-500 transition-all font-medium"
+                          className="w-full pl-8 pr-3 py-2.5 rounded-lg bg-gray-50 dark:bg-slate-950 border border-gray-300 dark:border-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-600 text-xs sm:text-sm focus:outline-none focus:border-slate-900 dark:focus:border-slate-600 transition-colors"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-slate-300 mb-1.5">WhatsApp / Phone *</label>
+                      <label className="block text-[11px] font-medium text-gray-700 dark:text-slate-400 mb-1">Phone *</label>
                       <div className="relative">
-                        <Phone size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                        <Phone size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-600" />
                         <input
                           type="tel"
                           name="phone"
@@ -691,7 +814,7 @@ export default function Pricing() {
                           placeholder="+91 98765 43210"
                           value={formData.phone}
                           onChange={handleInputChange}
-                          className="w-full pl-10 pr-3.5 py-3 rounded-xl bg-slate-950 border border-slate-800 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-cyan-500 transition-all font-medium"
+                          className="w-full pl-8 pr-3 py-2.5 rounded-lg bg-gray-50 dark:bg-slate-950 border border-gray-300 dark:border-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-600 text-xs sm:text-sm focus:outline-none focus:border-slate-900 dark:focus:border-slate-600 transition-colors"
                         />
                       </div>
                     </div>
@@ -699,60 +822,69 @@ export default function Pricing() {
                 </div>
 
                 {/* 3. ORDER SUMMARY */}
-                <div className="p-5 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-2.5">
-                  <div className="flex items-center justify-between text-xs sm:text-sm text-slate-400">
-                    <span>Selected Program:</span>
-                    <span className="font-bold text-slate-100">{selectedCourse.name}</span>
+                <div className="p-3.5 sm:p-4 rounded-xl bg-gray-50 dark:bg-slate-950 border border-gray-200 dark:border-slate-800 space-y-2">
+                  <div className="flex items-center justify-between text-xs text-gray-600 dark:text-slate-400">
+                    <span>Plan</span>
+                    <span className="text-gray-900 dark:text-slate-200 font-medium">{currentPlan.label} · {currentPlan.badge}</span>
                   </div>
-                  <div className="flex items-center justify-between text-xs sm:text-sm text-slate-400">
-                    <span>Plan Category:</span>
-                    <span className="font-semibold text-slate-300">{currentPlan.label} ({currentPlan.badge})</span>
+                  <div className="flex items-center justify-between text-xs text-gray-600 dark:text-slate-400">
+                    <span>Track</span>
+                    <span className="text-gray-900 dark:text-slate-200 font-medium text-right max-w-[65%] leading-tight">{selectedCourse.name}</span>
                   </div>
-                  <div className="flex items-center justify-between text-xs sm:text-sm text-slate-400">
-                    <span>LMS Activation &amp; Credentials:</span>
-                    <span className="font-semibold text-emerald-400">Instant Access (Included)</span>
-                  </div>
-                  <div className="h-px bg-slate-800 my-2" />
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="text-base font-black text-white block">Total Investment:</span>
-                      <span className="text-xs text-slate-400">All modules, mentorship & certificate included</span>
-                    </div>
-                    <span className={`text-3xl font-black ${currentPlan.theme.accentText}`}>
-                      {currentPlan.price}
+                  <div className="flex items-center justify-between text-xs text-gray-600 dark:text-slate-400">
+                    <span>Includes</span>
+                    <span className="text-gray-700 dark:text-slate-400 font-medium">
+                      {currentPlan.isPreRegister ? 'Reserved LMS seat' : 'LMS + Certificate + Internship'}
                     </span>
+                  </div>
+                  <div className="h-px bg-gray-200 dark:bg-slate-800" />
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-semibold text-gray-900 dark:text-white">Total</span>
+                    <span className="text-2xl font-bold text-gray-900 dark:text-white">{currentPlan.price}</span>
                   </div>
                 </div>
 
-                {/* 4. ENROLL NOW BUTTON (DELETED 'PROCEED TO PAY ON RAZORPAY') */}
-                <div>
+                {/* 4. ACTION BUTTONS */}
+                <div className="space-y-3">
+                  {/* Primary enroll / reserve button */}
                   <button
                     type="submit"
                     disabled={loading}
-                    className={`w-full py-4 px-6 rounded-2xl font-black text-base flex items-center justify-center gap-3 shadow-2xl transition-all cursor-pointer ${
-                      currentPlan.key === 'advanced'
-                        ? 'bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500 hover:from-amber-300 hover:to-rose-400 text-slate-950 shadow-amber-500/25'
-                        : 'bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 hover:from-cyan-300 hover:to-indigo-500 text-white shadow-cyan-500/25'
-                    }`}
+                    className="w-full py-3.5 sm:py-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-lg shadow-violet-500/25 active:scale-[0.99]"
                   >
                     {loading ? (
                       <span className="flex items-center gap-2">
-                        <Lock size={18} className="animate-spin" /> Processing Enrollment...
+                        <div className="w-4 h-4 border-2 border-current/30 border-t-current rounded-full animate-spin" />
+                        Processing...
                       </span>
                     ) : (
-                      <span className="flex items-center gap-2 tracking-wide font-black uppercase text-base">
-                        <Lock size={18} /> ENROLL NOW <ArrowRight size={18} />
+                      <span className="flex items-center gap-2">
+                        <Lock size={15} />
+                        {currentPlan.isPreRegister ? 'Reserve My Seat · ₹1,000' : 'Enroll Now · ' + currentPlan.price}
+                        <ArrowRight size={15} />
                       </span>
                     )}
                   </button>
 
-                  <div className="flex flex-wrap items-center justify-center gap-4 mt-4 text-[11px] text-slate-400">
-                    <span className="flex items-center gap-1.5">
-                      <ShieldCheck size={14} className="text-emerald-400" /> 256-Bit Encrypted Secure Checkout
+                  {/* LMS Login — large, prominent secondary button */}
+                  {currentPlan.isPreRegister && (
+                    <Link
+                      to="/lms"
+                      className="w-full py-3.5 sm:py-4 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 border border-gray-300 dark:border-slate-700 bg-gray-50 dark:bg-slate-900 text-gray-800 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800 transition-all"
+                    >
+                      <BookOpen size={16} />
+                      Login to LMS Portal
+                      <ExternalLink size={13} className="text-gray-400 dark:text-slate-500" />
+                    </Link>
+                  )}
+
+                  <div className="flex items-center justify-center gap-3 pt-1 text-[11px] text-gray-500 dark:text-slate-500">
+                    <span className="flex items-center gap-1">
+                      <ShieldCheck size={11} /> Secure Checkout
                     </span>
-                    <span>•</span>
-                    <span className="flex items-center gap-1.5">
-                      <CreditCard size={14} className="text-slate-400" /> UPI · GPay · PhonePe · Cards · Net Banking
+                    <span>·</span>
+                    <span className="flex items-center gap-1">
+                      <CreditCard size={11} /> UPI · Cards · Net Banking
                     </span>
                   </div>
                 </div>
@@ -762,27 +894,49 @@ export default function Pricing() {
         </section>
 
         {/* FAQS */}
-        <section className="py-20 px-6 max-w-4xl mx-auto border-t border-slate-900">
-          <div className="text-center mb-12">
-            <span className="text-xs font-bold uppercase tracking-widest text-cyan-400 block mb-2">
-              Common Questions
+        <section className="py-10 sm:py-16 px-4 sm:px-6 max-w-3xl mx-auto border-t border-gray-100 dark:border-slate-800/60">
+          <div className="text-center mb-6 sm:mb-10">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-50 dark:bg-violet-950/40 border border-violet-200 dark:border-violet-800/50 text-[11px] font-semibold text-violet-700 dark:text-violet-300 mb-3">
+              <HelpCircle size={11} /> FAQ
             </span>
-            <h2 className="text-3xl font-black text-white">Frequently Asked Questions</h2>
+            <h2 className="text-lg sm:text-2xl font-black text-gray-900 dark:text-white">Frequently Asked Questions</h2>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {faqs.map((f, i) => (
-              <div key={i} className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800/80">
-                <h3 className="text-base font-bold text-white flex items-center gap-2.5 mb-2">
-                  <HelpCircle size={18} className="text-cyan-400 shrink-0" />
+              <div key={i} className="p-4 rounded-xl bg-white dark:bg-slate-900/60 border border-gray-200 dark:border-slate-800 shadow-xs hover:border-violet-200 dark:hover:border-slate-700 transition-colors">
+                <h3 className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-1.5">
+                  <div className="w-5 h-5 rounded-full bg-violet-100 dark:bg-violet-900/50 flex items-center justify-center shrink-0">
+                    <HelpCircle size={11} className="text-violet-600 dark:text-violet-400" />
+                  </div>
                   {f.q}
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed pl-7">{f.a}</p>
+                <p className="text-xs text-gray-500 dark:text-slate-400 leading-relaxed pl-7">{f.a}</p>
               </div>
             ))}
           </div>
         </section>
       </div>
     </div>
+  </div>
+
+  {/* Mobile Pricing: Dedicated mobile-first layout with Homepage CSS & compact small pricing */}
+  <div className="block lg:hidden w-full">
+    <MobilePricing
+      plans={plans}
+      currentPlan={currentPlan}
+      selectedPlanKey={selectedPlanKey}
+      onSelectPlan={handlePlanSelect}
+      selectedCourse={selectedCourse}
+      onSelectCourse={setSelectedCourse}
+      availableCourses={availableCourses}
+      formData={formData}
+      onInputChange={handleInputChange}
+      onSubmit={handleSubmit}
+      loading={loading}
+      faqs={faqs}
+    />
+  </div>
+</>
   )
 }

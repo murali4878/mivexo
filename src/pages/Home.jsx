@@ -6,12 +6,13 @@ import MentorSection from '../components/home/MentorSection'
 import TestimonialsSection from '../components/home/TestimonialsSection'
 import FAQSection from '../components/home/FAQSection'
 import CTASection from '../components/home/CTASection'
+import CertificateQuickVerifier from '../components/home/CertificateQuickVerifier'
 import MobileHome from '../components/mobile/MobileHome'
 
 export default function Home() {
   return (
     <>
-      {/* Desktop Homepage: Completely separate and 100% unchanged */}
+      {/* Desktop Homepage */}
       <div className="hidden lg:block w-full">
         <HeroSection />
         <StatsSection />
@@ -19,11 +20,12 @@ export default function Home() {
         <HowItWorks />
         <MentorSection />
         <TestimonialsSection />
+        <CertificateQuickVerifier />
         <FAQSection />
         <CTASection />
       </div>
 
-      {/* Mobile Homepage: Completely redesigned mobile-first layout with smooth animations */}
+      {/* Mobile Homepage */}
       <div className="block lg:hidden w-full">
         <MobileHome />
       </div>

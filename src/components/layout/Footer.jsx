@@ -6,8 +6,7 @@ const footerLinks = {
   Platform: [
     { label: 'Programs', href: '/programs' },
     { label: 'LMS Portal', href: '/lms' },
-    { label: 'Placement Prep', href: '/placement' },
-    { label: 'Job Portal', href: '/jobs' }
+    { label: 'Placement Prep', href: '/placement' }
   ],
   Company: [
     { label: 'About MIVEXO', href: '/about' },

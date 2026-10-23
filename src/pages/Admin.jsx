@@ -83,8 +83,8 @@ export default function Admin() {
       <header className="bg-white dark:bg-[#13132B] border-b border-gray-200 dark:border-gray-800 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link to="/" className="dark:bg-white dark:px-2 dark:py-0.5 dark:rounded-lg">
-              <img src={mivexoLogo} alt="MIVEXO" className="h-7 w-auto object-contain" />
+            <Link to="/" className="flex items-center">
+              <img src={mivexoLogo} alt="MIVEXO" className="h-7 w-auto object-contain dark:brightness-0 dark:invert" />
             </Link>
             <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-violet-100 dark:bg-violet-900/50 text-violet-700 dark:text-violet-300">ADMIN</span>
           </div>

@@ -35,21 +35,21 @@ export default function MobileFAQ() {
   const shouldReduceMotion = useReducedMotion()
 
   return (
-    <section className="py-12 px-4 bg-[#070E1E] text-white overflow-hidden">
+    <section className="py-12 px-4 bg-white dark:bg-[#070E1E] text-gray-900 dark:text-white overflow-hidden transition-colors">
       <div className="max-w-md mx-auto">
         {/* Header */}
         <div className="text-center mb-6">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#8B3FF2]/20 border border-[#8B3FF2]/40 text-[#A855F7] text-[11px] font-bold mb-2">
-            <HelpCircle size={12} className="text-amber-300" />
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-100 dark:bg-violet-950/60 border border-violet-200 dark:border-violet-800 text-violet-700 dark:text-violet-300 text-[11px] font-bold mb-2">
+            <HelpCircle size={12} className="text-amber-400" />
             Frequently Asked Questions
           </span>
-          <h2 className="text-2xl xs:text-3xl font-black text-white leading-tight mb-2">
+          <h2 className="text-2xl xs:text-3xl font-black text-gray-900 dark:text-white leading-tight mb-2">
             Got Questions? <br />
-            <span className="bg-gradient-to-r from-[#8B3FF2] to-cyan-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">
               We've Got Answers.
             </span>
           </h2>
-          <p className="text-xs text-gray-300 max-w-xs mx-auto leading-relaxed">
+          <p className="text-xs text-gray-600 dark:text-gray-400 max-w-xs mx-auto leading-relaxed">
             Everything you need to know about MIVEXO training, credentials, and mentorship.
           </p>
         </div>
@@ -63,8 +63,8 @@ export default function MobileFAQ() {
                 key={idx}
                 className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
                   isOpen
-                    ? 'bg-[#0F1C3A] border-[#8B3FF2]/60 shadow-lg shadow-[#8B3FF2]/10'
-                    : 'bg-[#0F1C3A]/60 border-white/10 hover:border-white/20'
+                    ? 'bg-violet-50 dark:bg-[#0F1C3A] border-violet-400 dark:border-violet-600/60 shadow-md shadow-violet-500/10'
+                    : 'bg-gray-50 dark:bg-[#0F1C3A]/60 border-gray-200 dark:border-white/10 hover:border-violet-300 dark:hover:border-white/20'
                 }`}
               >
                 <button
@@ -72,17 +72,17 @@ export default function MobileFAQ() {
                   className="w-full flex items-center justify-between gap-3 p-4 text-left cursor-pointer"
                 >
                   <div className="flex-1">
-                    <span className="text-[9px] font-black uppercase tracking-wider text-violet-400 block mb-0.5">
+                    <span className="text-[9px] font-black uppercase tracking-wider text-violet-600 dark:text-violet-400 block mb-0.5">
                       {faq.category}
                     </span>
-                    <h3 className="text-xs font-bold text-white leading-snug">
+                    <h3 className="text-xs font-bold text-gray-900 dark:text-white leading-snug">
                       {faq.q}
                     </h3>
                   </div>
 
                   <div
                     className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 transition-colors ${
-                      isOpen ? 'bg-[#8B3FF2] text-white' : 'bg-white/10 text-gray-300'
+                      isOpen ? 'bg-violet-600 text-white' : 'bg-gray-200 dark:bg-white/10 text-gray-600 dark:text-gray-300'
                     }`}
                   >
                     {isOpen ? <Minus size={12} /> : <Plus size={12} />}
@@ -97,7 +97,7 @@ export default function MobileFAQ() {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: shouldReduceMotion ? 0.05 : 0.25 }}
                     >
-                      <div className="px-4 pb-4 pt-1 text-xs text-gray-300 leading-relaxed border-t border-white/5">
+                      <div className="px-4 pb-4 pt-1 text-xs text-gray-600 dark:text-gray-300 leading-relaxed border-t border-gray-200 dark:border-white/5">
                         {faq.a}
                       </div>
                     </motion.div>
@@ -109,13 +109,13 @@ export default function MobileFAQ() {
         </div>
 
         {/* Contact Strip */}
-        <div className="mt-8 text-center p-3 rounded-2xl bg-white/5 border border-white/10">
-          <p className="text-xs text-gray-300 flex items-center justify-center gap-1.5">
-            <Mail size={13} className="text-[#8B3FF2]" />
+        <div className="mt-8 text-center p-3 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10">
+          <p className="text-xs text-gray-600 dark:text-gray-300 flex items-center justify-center gap-1.5">
+            <Mail size={13} className="text-violet-600 dark:text-violet-400" />
             <span>Have a specific query?</span>
             <a
               href="mailto:mivexo.in@gmail.com"
-              className="text-violet-300 font-bold hover:underline"
+              className="text-violet-600 dark:text-violet-300 font-bold hover:underline"
             >
               mivexo.in@gmail.com
             </a>

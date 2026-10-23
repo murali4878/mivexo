@@ -22,6 +22,7 @@ import {
   Flame
 } from 'lucide-react'
 import mivexoLogo from '../../assets/mivexo_logo.png'
+import MivexoIntroVideo from '../ui/MivexoIntroVideo'
 
 const techTabs = [
   {
@@ -116,6 +117,7 @@ const floatingPills = [
 
 export default function HeroSection() {
   const [activeTab, setActiveTab] = useState(0)
+  const [showVideoModal, setShowVideoModal] = useState(false)
 
   // Auto-cycle through tech tabs every 6 seconds for continuous animation
   useEffect(() => {
@@ -192,16 +194,25 @@ export default function HeroSection() {
             >
               <Link
                 to="/pricing"
-                className="btn-primary !py-4 !px-8 !text-base font-black shadow-xl shadow-violet-500/25 flex items-center gap-2 group cursor-pointer"
+                className="btn-primary shadow-xl shadow-violet-500/25 group cursor-pointer"
               >
-                Enroll Now <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                Enroll Now <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 to="/programs"
-                className="btn-secondary !py-4 !px-6 !text-base font-bold flex items-center gap-2 cursor-pointer hover:border-violet-500"
+                className="btn-secondary cursor-pointer"
               >
                 <Play size={16} className="text-violet-600 dark:text-violet-400" /> Explore 20 Tracks
               </Link>
+              <button
+                onClick={() => setShowVideoModal(true)}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-indigo-300/60 dark:border-indigo-500/40 text-indigo-700 dark:text-indigo-300 font-semibold text-sm hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-all duration-200 cursor-pointer"
+              >
+                <span className="w-6 h-6 rounded-full bg-violet-100 dark:bg-violet-900/50 flex items-center justify-center">
+                  <Play size={11} className="text-violet-600 dark:text-violet-400 fill-current translate-x-0.5" />
+                </span>
+                Watch Intro
+              </button>
             </motion.div>
 
             {/* Trust badges */}
@@ -405,6 +416,71 @@ export default function HeroSection() {
           </div>
         </div>
       </div>
+
+      {/* DESKTOP VIDEO MODAL */}
+      <AnimatePresence>
+        {showVideoModal && (
+          <motion.div
+            key="desktop-video-modal"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-6"
+            onClick={() => setShowVideoModal(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.93, y: 20 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+              className="w-full max-w-xl relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close */}
+              <button
+                onClick={() => setShowVideoModal(false)}
+                className="absolute -top-4 -right-4 z-20 w-9 h-9 rounded-full bg-slate-800 border border-slate-700 text-slate-300 hover:text-white flex items-center justify-center shadow-xl transition-colors"
+              >
+                <span className="text-lg leading-none">×</span>
+              </button>
+
+              {/* Label */}
+              <div className="mb-3 flex items-center gap-3">
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-md">
+                  <Play size={13} className="text-white fill-white translate-x-0.5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-white leading-none">MIVEXO Platform Intro</h3>
+                  <p className="text-[11px] text-slate-400 mt-0.5">15+ domains · QR-verified certificates · 20 sec preview</p>
+                </div>
+              </div>
+
+              {/* Video */}
+              <div className="w-full aspect-video rounded-2xl overflow-hidden shadow-2xl shadow-violet-500/20 border border-violet-500/20">
+                <MivexoIntroVideo onEnd={() => {}} />
+              </div>
+
+              {/* Bottom CTA */}
+              <div className="mt-4 flex items-center justify-between gap-3">
+                <Link
+                  to="/programs"
+                  onClick={() => setShowVideoModal(false)}
+                  className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 text-white text-sm font-bold flex items-center justify-center gap-2 shadow-lg shadow-violet-500/25 hover:from-violet-500 hover:to-indigo-500 transition-all"
+                >
+                  Explore All Programs <ArrowRight size={15} />
+                </Link>
+                <button
+                  onClick={() => setShowVideoModal(false)}
+                  className="px-5 py-2.5 rounded-xl border border-slate-700 text-slate-300 hover:text-white hover:border-slate-500 text-sm font-semibold transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }

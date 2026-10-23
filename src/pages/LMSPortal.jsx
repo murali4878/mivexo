@@ -1,11 +1,12 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  BookOpen, Play, CheckCircle, Clock, Award, BarChart2, ChevronRight, Menu, X,
+  BookOpen, Play, CheckCircle, Clock, Award, BarChart2, ChevronRight, ChevronDown, Menu, X,
   Home, Settings, LogOut, FileText, Users, Download, HelpCircle, Sparkles,
   ExternalLink, Code2, CheckCircle2, AlertCircle, Laptop, ArrowRight, Star,
   FolderDown, Layers, Terminal, Send, Lock, ShieldAlert, Map,
-  User, Mail, Phone, Check, ShieldCheck, Zap, Key, ArrowUpRight, CheckSquare, CreditCard
+  User, Mail, Phone, Check, ShieldCheck, Zap, Key, ArrowUpRight, CheckSquare, CreditCard,
+  Search
 } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
@@ -388,6 +389,24 @@ export default function LMSPortal() {
     phone: '',
     track: 'Full Stack Web Development (MERN & Next.js)'
   })
+  const [trackDropdownOpen, setTrackDropdownOpen] = useState(false)
+  const [trackSearch, setTrackSearch] = useState('')
+  const trackDropdownRef = useRef(null)
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (trackDropdownRef.current && !trackDropdownRef.current.contains(event.target)) {
+        setTrackDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  const filteredTracks = LMS_TRACK_OPTIONS.filter((t) =>
+    t.toLowerCase().includes(trackSearch.toLowerCase())
+  )
+
   const [loginForm, setLoginForm] = useState({
     email: '',
     password: ''
@@ -534,55 +553,64 @@ export default function LMSPortal() {
             initial={{ opacity: 0, y: 25, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.35, ease: 'easeOut' }}
-            className="bg-[#0f0f23]/95 backdrop-blur-2xl rounded-3xl border border-violet-500/25 shadow-2xl shadow-violet-950/60 p-5 sm:p-8 relative overflow-hidden"
+            className="bg-[#0f0f23]/95 backdrop-blur-2xl rounded-3xl border border-slate-800 shadow-2xl p-5 sm:p-8 relative overflow-hidden"
           >
-            {/* Top Accent Line */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-violet-600 via-fuchsia-500 to-amber-500" />
+            {/* Top Accent Line - Professional Gradient */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-violet-600 via-indigo-500 to-purple-600" />
 
             {/* HEADER */}
-            <div className="flex items-start justify-between gap-4 pb-5 border-b border-white/10 mb-6">
+            <div className="flex items-start justify-between gap-4 pb-4 border-b border-white/10 mb-5">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="w-2 h-2 rounded-full bg-violet-400 animate-pulse" />
                   <span className="text-[11px] font-bold uppercase tracking-widest text-violet-400">MIVEXO LMS PORTAL</span>
                 </div>
-                <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                  {authMode === 'register' ? 'Register or login' : 'Student LMS Login'}
+                <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+                  {authMode === 'register' ? 'Register or Reserve Seat' : 'Student LMS Login'}
                 </h1>
                 <p className="text-xs sm:text-sm text-gray-400 mt-0.5">
                   {authMode === 'register'
-                    ? 'Minimal steps, Secure checkout.'
-                    : 'Enter your student credentials to access your study modules & quizzes.'}
+                    ? 'Secure Razorpay checkout · Instant access credentials'
+                    : 'Enter your student credentials to access your modules & assignments.'}
                 </p>
               </div>
 
-              <div className="flex items-center gap-2 shrink-0">
-                {authMode === 'register' ? (
-                  <button
-                    type="button"
-                    onClick={() => setAuthMode('login')}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-violet-600/20 hover:bg-violet-600/35 border border-violet-500/40 text-violet-300 hover:text-white text-xs font-bold transition-all"
-                  >
-                    Login to LMS <ArrowUpRight size={13} />
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => setAuthMode('register')}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-violet-600/20 hover:bg-violet-600/35 border border-violet-500/40 text-violet-300 hover:text-white text-xs font-bold transition-all"
-                  >
-                    Register / Reserve <ArrowUpRight size={13} />
-                  </button>
-                )}
-                <button
-                  type="button"
-                  onClick={() => navigate('/')}
-                  className="p-1.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
-                  title="Close and return to Home"
-                >
-                  <X size={18} />
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={() => navigate('/')}
+                className="p-1.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+                title="Close and return to Home"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* PROMINENT MODE SWITCHER: REGISTER VS LOGIN - Professional Colors */}
+            <div className="grid grid-cols-2 p-1 bg-slate-950/80 border border-slate-800 rounded-2xl mb-6 shadow-inner">
+              <button
+                type="button"
+                onClick={() => setAuthMode('register')}
+                className={`py-3 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                  authMode === 'register'
+                    ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-md shadow-violet-500/30'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <Sparkles size={15} className={authMode === 'register' ? 'text-amber-300' : ''} />
+                <span>Enroll / Reserve Seat</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setAuthMode('login')}
+                className={`py-3 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                  authMode === 'login'
+                    ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-md shadow-violet-500/30'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <Lock size={15} className={authMode === 'login' ? 'text-violet-200' : ''} />
+                <span>Login to LMS</span>
+              </button>
             </div>
 
             {/* AUTH MODE: REGISTER & ENROLL */}
@@ -592,10 +620,10 @@ export default function LMSPortal() {
                 {/* 1. SELECT PLAN */}
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <label className="text-[11px] font-black uppercase tracking-wider text-gray-300 flex items-center gap-1.5">
-                      <Layers size={13} className="text-violet-400" /> SELECT PLAN
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-gray-300 flex items-center gap-1.5">
+                      <Layers size={13} className="text-slate-400" /> SELECT PLAN
                     </label>
-                    <span className="text-[11px] text-gray-400">Choose your training tier</span>
+                    <span className="text-[11px] text-gray-400">Choose training tier</span>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -603,23 +631,23 @@ export default function LMSPortal() {
                     <button
                       type="button"
                       onClick={() => setSelectedPlan('foundation')}
-                      className={`relative p-4 rounded-2xl text-left border-2 transition-all flex flex-col justify-between ${
+                      className={`relative p-4 rounded-2xl text-left border transition-all flex flex-col justify-between cursor-pointer ${
                         selectedPlan === 'foundation'
-                          ? 'border-violet-500 bg-violet-950/40 shadow-lg shadow-violet-900/30'
-                          : 'border-white/10 bg-white/5 hover:border-white/20'
+                          ? 'border-cyan-500/70 bg-gradient-to-br from-cyan-950/30 via-slate-900/80 to-[#0e1628] shadow-lg shadow-cyan-500/10 ring-1 ring-cyan-500/40'
+                          : 'border-white/10 bg-slate-900/40 hover:border-white/20'
                       }`}
                     >
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs font-bold uppercase tracking-wider text-violet-300">Foundation</span>
+                        <span className="text-xs font-bold uppercase tracking-wider text-cyan-400">Foundation</span>
                         <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
-                          selectedPlan === 'foundation' ? 'border-violet-400 bg-violet-600' : 'border-gray-500'
+                          selectedPlan === 'foundation' ? 'border-cyan-400 bg-cyan-500 text-slate-950' : 'border-gray-500'
                         }`}>
-                          {selectedPlan === 'foundation' && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                          {selectedPlan === 'foundation' && <div className="w-1.5 h-1.5 rounded-full bg-slate-950" />}
                         </div>
                       </div>
                       <div>
                         <div className="text-2xl font-black text-white">₹3,000</div>
-                        <p className="text-[11px] text-gray-300 mt-1 line-clamp-2">
+                        <p className="text-[11px] text-gray-400 mt-1 line-clamp-2">
                           Complete Internship &amp; Core Training with full LMS access &amp; Certificate.
                         </p>
                       </div>
@@ -629,28 +657,28 @@ export default function LMSPortal() {
                     <button
                       type="button"
                       onClick={() => setSelectedPlan('advanced')}
-                      className={`relative p-4 rounded-2xl text-left border-2 transition-all flex flex-col justify-between ${
+                      className={`relative p-4 rounded-2xl text-left border transition-all flex flex-col justify-between cursor-pointer ${
                         selectedPlan === 'advanced'
-                          ? 'border-amber-500/80 bg-amber-950/30 shadow-lg shadow-amber-950/40'
-                          : 'border-white/10 bg-white/5 hover:border-white/20'
+                          ? 'border-violet-500/70 bg-gradient-to-br from-violet-950/30 via-slate-900/80 to-[#140e2b] shadow-lg shadow-violet-500/15 ring-1 ring-violet-500/40'
+                          : 'border-white/10 bg-slate-900/40 hover:border-white/20'
                       }`}
                     >
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <span className="text-xs font-bold uppercase tracking-wider text-amber-300">Advanced</span>
-                          <span className="text-[9px] font-black px-1.5 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950">
+                          <span className="text-xs font-bold uppercase tracking-wider text-violet-400">Advanced</span>
+                          <span className="text-[9px] font-black px-2 py-0.5 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-xs">
                             POPULAR
                           </span>
                         </div>
                         <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
-                          selectedPlan === 'advanced' ? 'border-amber-400 bg-amber-500' : 'border-gray-500'
+                          selectedPlan === 'advanced' ? 'border-violet-400 bg-violet-500 text-white' : 'border-gray-500'
                         }`}>
                           {selectedPlan === 'advanced' && <div className="w-1.5 h-1.5 rounded-full bg-slate-950" />}
                         </div>
                       </div>
                       <div>
                         <div className="text-2xl font-black text-white">₹3,500</div>
-                        <p className="text-[11px] text-gray-300 mt-1 line-clamp-2">
+                        <p className="text-[11px] text-gray-400 mt-1 line-clamp-2">
                           Full Placement Accelerator, 1-on-1 Mentorship, Capstone &amp; Direct Referrals.
                         </p>
                       </div>
@@ -661,8 +689,8 @@ export default function LMSPortal() {
                 {/* 2. PAYMENT OPTION */}
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <label className="text-[11px] font-black uppercase tracking-wider text-gray-300 flex items-center gap-1.5">
-                      <CreditCard size={13} className="text-violet-400" /> PAYMENT OPTION
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-gray-300 flex items-center gap-1.5">
+                      <CreditCard size={13} className="text-amber-400" /> PAYMENT OPTION
                     </label>
                     <span className="text-[11px] text-gray-400">Seat Booking vs Full Payment</span>
                   </div>
@@ -672,26 +700,26 @@ export default function LMSPortal() {
                     <button
                       type="button"
                       onClick={() => setPaymentOption('reserve')}
-                      className={`p-3.5 rounded-2xl text-left border-2 transition-all flex items-start justify-between ${
+                      className={`p-3.5 rounded-2xl text-left border transition-all flex items-start justify-between cursor-pointer ${
                         paymentOption === 'reserve'
-                          ? 'border-emerald-500 bg-emerald-950/30 shadow-md shadow-emerald-950/30'
-                          : 'border-white/10 bg-white/5 hover:border-white/20'
+                          ? 'border-amber-500/60 bg-gradient-to-br from-amber-950/25 via-slate-900/80 to-[#1c1508] shadow-md shadow-amber-500/10 ring-1 ring-amber-500/30'
+                          : 'border-white/10 bg-slate-900/40 hover:border-white/20'
                       }`}
                     >
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="text-xs font-bold text-white">Reserve seat</span>
-                          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                          <span className="text-xs font-bold text-white">Reserve Seat</span>
+                          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30">
                             Flexible
                           </span>
                         </div>
-                        <div className="text-xl font-black text-emerald-400 mt-1">₹1,000</div>
-                        <p className="text-[10px] text-gray-300 mt-0.5">
+                        <div className="text-xl font-black text-amber-400 mt-1">₹1,000</div>
+                        <p className="text-[10px] text-gray-400 mt-0.5">
                           Pre-registration for both plans (Balance paid at batch start)
                         </p>
                       </div>
                       <div className={`w-4 h-4 rounded-full border mt-0.5 flex items-center justify-center shrink-0 ${
-                        paymentOption === 'reserve' ? 'border-emerald-400 bg-emerald-500' : 'border-gray-500'
+                        paymentOption === 'reserve' ? 'border-amber-400 bg-amber-500' : 'border-gray-500'
                       }`}>
                         {paymentOption === 'reserve' && <div className="w-1.5 h-1.5 rounded-full bg-slate-950" />}
                       </div>
@@ -701,30 +729,30 @@ export default function LMSPortal() {
                     <button
                       type="button"
                       onClick={() => setPaymentOption('full')}
-                      className={`p-3.5 rounded-2xl text-left border-2 transition-all flex items-start justify-between ${
+                      className={`p-3.5 rounded-2xl text-left border transition-all flex items-start justify-between cursor-pointer ${
                         paymentOption === 'full'
-                          ? 'border-violet-500 bg-violet-950/30 shadow-md shadow-violet-950/30'
-                          : 'border-white/10 bg-white/5 hover:border-white/20'
+                          ? 'border-emerald-500/60 bg-gradient-to-br from-emerald-950/25 via-slate-900/80 to-[#0b1c13] shadow-md shadow-emerald-500/10 ring-1 ring-emerald-500/30'
+                          : 'border-white/10 bg-slate-900/40 hover:border-white/20'
                       }`}
                     >
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="text-xs font-bold text-white">Pay in full</span>
-                          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-violet-500/20 text-violet-300 border border-violet-500/30">
+                          <span className="text-xs font-bold text-white">Pay in Full</span>
+                          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
                             Instant Access
                           </span>
                         </div>
-                        <div className="text-xl font-black text-violet-300 mt-1">
+                        <div className="text-xl font-black text-emerald-400 mt-1">
                           ₹{selectedPlan === 'foundation' ? '3,000' : '3,500'}
                         </div>
-                        <p className="text-[10px] text-gray-300 mt-0.5">
+                        <p className="text-[10px] text-gray-400 mt-0.5">
                           One-time complete payment, zero future installments
                         </p>
                       </div>
                       <div className={`w-4 h-4 rounded-full border mt-0.5 flex items-center justify-center shrink-0 ${
-                        paymentOption === 'full' ? 'border-violet-400 bg-violet-600' : 'border-gray-500'
+                        paymentOption === 'full' ? 'border-emerald-400 bg-emerald-500' : 'border-gray-500'
                       }`}>
-                        {paymentOption === 'full' && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                        {paymentOption === 'full' && <div className="w-1.5 h-1.5 rounded-full bg-slate-950" />}
                       </div>
                     </button>
                   </div>
@@ -734,31 +762,31 @@ export default function LMSPortal() {
                 <div className="space-y-3 pt-1">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[11px] font-semibold text-gray-300 mb-1">Full Name</label>
-                      <div className="relative">
-                        <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                      <label className="block text-[11px] font-semibold text-slate-300 mb-1">Full Name</label>
+                      <div className="relative group">
+                        <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-violet-400 transition-colors" />
                         <input
                           type="text"
                           required
                           value={regForm.name}
                           onChange={(e) => setRegForm({ ...regForm, name: e.target.value })}
                           placeholder="e.g. Rahul Sharma"
-                          className="w-full pl-9 pr-3 py-2.5 bg-black/40 border border-white/15 focus:border-violet-500 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-violet-500"
+                          className="w-full pl-9 pr-3 py-2.5 bg-slate-900/60 border border-slate-700/80 focus:border-violet-500 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-violet-500/40 transition-colors"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-semibold text-gray-300 mb-1">Email Address</label>
-                      <div className="relative">
-                        <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                      <label className="block text-[11px] font-semibold text-slate-300 mb-1">Email Address</label>
+                      <div className="relative group">
+                        <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-violet-400 transition-colors" />
                         <input
                           type="email"
                           required
                           value={regForm.email}
                           onChange={(e) => setRegForm({ ...regForm, email: e.target.value })}
                           placeholder="e.g. rahul@gmail.com"
-                          className="w-full pl-9 pr-3 py-2.5 bg-black/40 border border-white/15 focus:border-violet-500 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-violet-500"
+                          className="w-full pl-9 pr-3 py-2.5 bg-slate-900/60 border border-slate-700/80 focus:border-violet-500 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-violet-500/40 transition-colors"
                         />
                       </div>
                     </div>
@@ -766,92 +794,147 @@ export default function LMSPortal() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[11px] font-semibold text-gray-300 mb-1">WhatsApp / Phone</label>
-                      <div className="relative">
-                        <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                      <label className="block text-[11px] font-semibold text-slate-300 mb-1">WhatsApp / Phone</label>
+                      <div className="relative group">
+                        <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-violet-400 transition-colors" />
                         <input
                           type="tel"
                           required
                           value={regForm.phone}
                           onChange={(e) => setRegForm({ ...regForm, phone: e.target.value })}
                           placeholder="e.g. +91 98765 43210"
-                          className="w-full pl-9 pr-3 py-2.5 bg-black/40 border border-white/15 focus:border-violet-500 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-violet-500"
+                          className="w-full pl-9 pr-3 py-2.5 bg-slate-900/60 border border-slate-700/80 focus:border-violet-500 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-violet-500/40 transition-colors"
                         />
                       </div>
                     </div>
 
+                    {/* CUSTOM DESIGNED TRACK SELECTION DROPDOWN */}
                     <div>
-                      <label className="block text-[11px] font-semibold text-gray-300 mb-1">Select Program Track</label>
-                      <div className="relative">
-                        <select
-                          value={regForm.track}
-                          onChange={(e) => setRegForm({ ...regForm, track: e.target.value })}
-                          className="w-full px-3 py-2.5 bg-black/40 border border-white/15 focus:border-violet-500 rounded-xl text-xs text-white focus:outline-none focus:ring-1 focus:ring-violet-500 cursor-pointer"
+                      <label className="block text-[11px] font-semibold text-slate-300 mb-1">Select Program Track</label>
+                      <div className="relative" ref={trackDropdownRef}>
+                        <button
+                          type="button"
+                          onClick={() => setTrackDropdownOpen(!trackDropdownOpen)}
+                          className={`w-full px-3 py-2.5 bg-slate-900/60 border rounded-xl text-xs text-white flex items-center justify-between gap-2 transition-all cursor-pointer text-left ${
+                            trackDropdownOpen
+                              ? 'border-violet-500 ring-1 ring-violet-500/40 bg-slate-900'
+                              : 'border-slate-700/80 hover:border-violet-500/50'
+                          }`}
                         >
-                          {LMS_TRACK_OPTIONS.map((track, i) => (
-                            <option key={i} value={track} className="bg-slate-900 text-white">
-                              {track}
-                            </option>
-                          ))}
-                        </select>
+                          <span className="truncate font-medium">{regForm.track}</span>
+                          <ChevronDown
+                            size={14}
+                            className={`text-slate-400 shrink-0 transition-transform duration-200 ${
+                              trackDropdownOpen ? 'rotate-180 text-violet-400' : ''
+                            }`}
+                          />
+                        </button>
+
+                        {/* Styled Dropdown Menu */}
+                        {trackDropdownOpen && (
+                          <div className="absolute left-0 right-0 top-full mt-1.5 z-50 bg-[#0c0d1c] border border-violet-500/30 rounded-2xl shadow-2xl shadow-violet-950/50 p-2 backdrop-blur-xl">
+                            {/* Search Filter */}
+                            <div className="relative mb-2">
+                              <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                              <input
+                                type="text"
+                                value={trackSearch}
+                                onChange={(e) => setTrackSearch(e.target.value)}
+                                placeholder="Search 20 specialization tracks..."
+                                className="w-full pl-8 pr-3 py-1.5 bg-slate-900/90 border border-slate-700 focus:border-violet-500 rounded-lg text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-violet-500/40"
+                                autoFocus
+                              />
+                            </div>
+
+                            {/* Track List */}
+                            <div className="max-h-52 overflow-y-auto space-y-1 pr-1 custom-scrollbar">
+                              {filteredTracks.map((track, i) => {
+                                const isSelected = regForm.track === track
+                                return (
+                                  <div
+                                    key={i}
+                                    onClick={() => {
+                                      setRegForm({ ...regForm, track })
+                                      setTrackDropdownOpen(false)
+                                      setTrackSearch('')
+                                    }}
+                                    className={`px-3 py-2 rounded-lg text-xs cursor-pointer flex items-center justify-between transition-colors ${
+                                      isSelected
+                                        ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-bold shadow-sm shadow-violet-500/30'
+                                        : 'text-slate-300 hover:bg-violet-950/40 hover:text-violet-200'
+                                    }`}
+                                  >
+                                    <span className="truncate">{track}</span>
+                                    {isSelected && <Check size={14} className="shrink-0 text-white ml-2" />}
+                                  </div>
+                                )
+                              })}
+                              {filteredTracks.length === 0 && (
+                                <p className="text-center text-xs text-gray-500 py-3">No matching tracks found</p>
+                              )}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* 4. SUMMARY & ENROLL NOW BUTTON */}
+                {/* 4. SUMMARY & ENROLL NOW BUTTON - Professional Violet Gradient */}
                 <div className="pt-2">
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-violet-600 via-fuchsia-600 to-indigo-600 hover:from-violet-500 hover:via-fuchsia-500 hover:to-indigo-500 text-white font-black text-sm uppercase tracking-wide flex items-center justify-center gap-2 shadow-xl shadow-violet-600/30 transition-all hover:scale-[1.01] active:scale-[0.99] cursor-pointer disabled:opacity-50"
+                    className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-violet-600 via-indigo-600 to-purple-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-violet-500/25 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50"
                   >
-                    <span>ENROLL NOW — Pay ₹{currentAmount.toLocaleString()}</span>
+                    <span>
+                      {paymentOption === 'reserve' ? 'RESERVE SEAT — PAY ₹1,000' : `ENROLL NOW — PAY ₹${currentAmount.toLocaleString()}`}
+                    </span>
                     <ArrowUpRight size={17} />
                   </button>
 
-                  <div className="flex items-center justify-center gap-1.5 mt-3 pt-3 border-t border-white/10 text-[11px] text-gray-400">
+                  <div className="flex items-center justify-center gap-1.5 mt-3 pt-3 border-t border-slate-800 text-[11px] text-slate-400">
                     <ShieldCheck size={14} className="text-emerald-400" />
                     <span>100% Secure Razorpay Checkout · Instant LMS Credentials on Enrollment</span>
                   </div>
                 </div>
               </form>
             ) : (
-              /* AUTH MODE: MEMBER LOGIN */
+              /* AUTH MODE: MEMBER LOGIN - Professional Colors */
               <form onSubmit={handleLoginSubmit} className="space-y-4">
-                <div className="p-3.5 rounded-2xl bg-violet-950/30 border border-violet-500/20 text-xs text-violet-200">
-                  <div className="flex items-center gap-2 font-bold mb-1">
+                <div className="p-3.5 rounded-2xl bg-gradient-to-r from-violet-950/40 to-indigo-950/30 border border-violet-800/40 text-xs text-slate-300">
+                  <div className="flex items-center gap-2 font-bold mb-1 text-violet-200">
                     <Lock size={14} className="text-violet-400" /> Enrolled Member Credentials
                   </div>
                   Please sign in using the email and LMS password dispatched to your email &amp; WhatsApp following verified registration.
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-gray-300 mb-1.5">Registered Email</label>
-                  <div className="relative">
-                    <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">Registered Email</label>
+                  <div className="relative group">
+                    <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-violet-400 transition-colors" />
                     <input
                       type="email"
                       required
                       value={loginForm.email}
                       onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
                       placeholder="student@example.com"
-                      className="w-full pl-10 pr-4 py-3 bg-black/40 border border-white/15 focus:border-violet-500 rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-violet-500"
+                      className="w-full pl-10 pr-4 py-3 bg-slate-900/60 border border-slate-700/80 focus:border-violet-500 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-violet-500/40 transition-colors"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-gray-300 mb-1.5">LMS Password</label>
-                  <div className="relative">
-                    <Key size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">LMS Password</label>
+                  <div className="relative group">
+                    <Key size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-violet-400 transition-colors" />
                     <input
                       type="password"
                       required
                       value={loginForm.password}
                       onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
                       placeholder="••••••••••••"
-                      className="w-full pl-10 pr-4 py-3 bg-black/40 border border-white/15 focus:border-violet-500 rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-violet-500"
+                      className="w-full pl-10 pr-4 py-3 bg-slate-900/60 border border-slate-700/80 focus:border-violet-500 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-violet-500/40 transition-colors"
                     />
                   </div>
                 </div>
@@ -860,20 +943,20 @@ export default function LMSPortal() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-xl shadow-violet-600/30 transition-all cursor-pointer disabled:opacity-50"
+                    className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-violet-600 via-indigo-600 to-purple-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-violet-500/25 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50"
                   >
                     <BookOpen size={16} />
                     <span>{isSubmitting ? 'Verifying...' : 'Sign In to LMS Dashboard ↗'}</span>
                   </button>
                 </div>
 
-                <div className="text-center pt-2 border-t border-white/10">
-                  <p className="text-xs text-gray-400">
+                <div className="text-center pt-2 border-t border-slate-800">
+                  <p className="text-xs text-slate-400">
                     Don&apos;t have credentials yet?{' '}
                     <button
                       type="button"
                       onClick={() => setAuthMode('register')}
-                      className="text-violet-400 hover:text-violet-300 font-bold hover:underline"
+                      className="text-violet-400 hover:text-violet-300 hover:underline font-bold transition-colors"
                     >
                       Reserve Seat / Enroll Now for ₹1,000 ↗
                     </button>
@@ -896,13 +979,11 @@ export default function LMSPortal() {
         {/* Brand Header */}
         <div className="flex items-center justify-between p-5 border-b-2 border-gray-200 dark:border-gray-800">
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="dark:bg-white dark:px-2 dark:py-0.5 dark:rounded-lg">
-              <img
-                src={mivexoLogo}
-                alt="MIVEXO LMS"
-                className="h-7 w-auto object-contain group-hover:scale-105 transition-transform"
-              />
-            </div>
+            <img
+              src={mivexoLogo}
+              alt="MIVEXO LMS"
+              className="h-7 w-auto object-contain group-hover:scale-105 transition-transform dark:brightness-0 dark:invert"
+            />
             <span className="text-[10px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded bg-violet-100 dark:bg-violet-900/50 text-violet-700 dark:text-violet-300">LMS</span>
           </Link>
           <button onClick={() => setSidebarOpen(false)} className="lg:hidden p-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:hover:text-white">

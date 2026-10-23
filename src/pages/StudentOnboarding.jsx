@@ -351,14 +351,14 @@ export default function StudentOnboarding() {
               <button
                 type="button"
                 onClick={() => window.print()}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-sm transition-all"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold text-sm transition-all duration-200"
               >
                 <Printer size={16} /> Print / Save Confirmation
               </button>
 
               <Link
                 to="/"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#8B3FF2] hover:bg-[#7a34d8] text-white font-bold text-sm shadow-lg shadow-[#8B3FF2]/30 transition-all"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-semibold text-sm shadow-md shadow-violet-500/20 hover:shadow-lg transition-all duration-200"
               >
                 Back to Homepage <ArrowRight size={16} />
               </Link>
@@ -857,7 +857,7 @@ export default function StudentOnboarding() {
                 <button
                   type="submit"
                   disabled={isSubmitting || !formData.agreedPolicy}
-                  className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-[#8B3FF2] via-purple-600 to-indigo-600 hover:from-[#7c30e2] hover:via-purple-500 hover:to-indigo-500 text-white font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl shadow-[#8B3FF2]/35 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                  className="w-full py-3.5 px-6 rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-semibold text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-md shadow-violet-500/20 hover:shadow-lg hover:shadow-violet-500/30 transition-all duration-200 hover:-translate-y-px active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 cursor-pointer"
                 >
                   {isSubmitting ? (
                     <>

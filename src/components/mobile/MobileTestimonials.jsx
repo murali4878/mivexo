@@ -1,205 +1,256 @@
-import { useState } from 'react'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
-import { Star, CheckCircle2, Building2, GraduationCap, Sparkles, Quote } from 'lucide-react'
+import { useState, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import {
+  Star,
+  GraduationCap,
+  BadgeCheck,
+  Quote,
+  ChevronLeft,
+  ChevronRight,
+  ShieldCheck,
+  CheckCircle2
+} from 'lucide-react'
 
-const mobileReviews = [
+const collegeReviews = [
   {
     id: 1,
-    name: 'Naveen Chandran',
-    college: 'SRM Institute, Chennai',
-    degree: 'B.Tech CSE (3rd Year)',
+    name: 'Karthik R.',
+    branch: 'B.Tech CSE · 3rd Year',
+    college: 'SRM Institute of Science & Tech, Kattankulathur',
+    collegeShort: 'SRM University',
     track: 'Full Stack Web Development',
-    category: 'tech',
+    badge: 'College VIVA Approved',
+    badgeColor: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20',
+    avatarBg: 'bg-gradient-to-br from-violet-600 to-indigo-600',
+    initials: 'KR',
     rating: 5,
-    avatar: 'NC',
-    avatarColor: 'from-blue-600 to-indigo-600',
-    capstone: 'Multi-Tenant SaaS with Razorpay & MongoDB',
-    review:
-      'Our college required a verified 6-week industry internship report for 6th-sem credits. The QR code on MIVEXO’s certificate resolved directly to the cryptographic verification URL, and our department HOD approved it immediately. Building the Next.js 14 capstone gave me concrete code to demo in campus interviews.'
+    quote: 'Submitted our e-commerce capstone project for 6th sem internal review. Faculty accepted the QR-verified internship letter without any issues. Mentor helped fix Docker deployment errors on Sunday night!',
+    keyHighlight: 'Internship letter approved for college credits'
   },
   {
     id: 2,
-    name: 'Shreya Mukherjee',
+    name: 'Sneha Patil',
+    branch: 'BE Info Science · Final Year',
     college: 'PES University, Bengaluru',
-    degree: 'B.Tech ISE (Final Year)',
-    track: 'AI & Deep Learning',
-    category: 'tech',
+    collegeShort: 'PES University',
+    track: 'Data Analytics & Power BI',
+    badge: 'Campus Placement Cleared',
+    badgeColor: 'bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/20',
+    avatarBg: 'bg-gradient-to-br from-blue-600 to-cyan-600',
+    initials: 'SP',
     rating: 5,
-    avatar: 'SM',
-    avatarColor: 'from-amber-500 to-orange-600',
-    capstone: 'Enterprise RAG Q&A System with Pinecone & LangChain',
-    review:
-      'College lab experiments were limited to basic sklearn scripts. Here, we actually loaded transformer attention heads and wired up a custom vector database retrieval pipeline. The mentor left line-by-line feedback on my pull requests instead of just rubber-stamping the project.'
+    quote: 'Was stressed about campus aptitude and SQL interview rounds. The placement practice bank and weekly mentor doubt sessions really gave me confidence to crack the technical round.',
+    keyHighlight: 'Cleared Tier-1 company campus interview'
   },
   {
     id: 3,
-    name: 'Harish Balaji',
-    college: 'PSG College of Technology, Coimbatore',
-    degree: 'B.E. ECE (3rd Year)',
-    track: 'Cloud Computing & DevOps',
-    category: 'tech',
+    name: 'Aditya Verma',
+    branch: 'B.Tech ECE · 3rd Year',
+    college: 'Vellore Institute of Technology (VIT)',
+    collegeShort: 'VIT Vellore',
+    track: 'IoT & Embedded Systems',
+    badge: 'Hardware + Cloud Project',
+    badgeColor: 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20',
+    avatarBg: 'bg-gradient-to-br from-amber-600 to-orange-600',
+    initials: 'AV',
     rating: 5,
-    avatar: 'HB',
-    avatarColor: 'from-cyan-500 to-blue-600',
-    capstone: 'Multi-Region Kubernetes Cluster via Terraform',
-    review:
-      'Coming from an Electronics background, I was struggling to understand Docker networking and Kubernetes manifests through disconnected videos. The sequential modules and practical Terraform labs gave me exactly what I needed to clear technical rounds.'
+    quote: 'Most platforms only teach theory on PPTs. Here we configured real ESP32 MQTT broker data to an AWS dashboard. Our department HOD signed off on our semester internship report directly.',
+    keyHighlight: 'Direct signoff from Department HOD'
   },
   {
     id: 4,
-    name: 'Ananya Deshmukh',
-    college: 'PICT, Pune',
-    degree: 'B.E. Computer Engineering',
-    track: 'UI/UX Design & Design Systems',
-    category: 'non-tech',
+    name: 'Megha Nair',
+    branch: 'B.Tech IT · 2025 Batch',
+    college: 'Anna University (CEG Campus), Chennai',
+    collegeShort: 'Anna University',
+    track: 'Cloud & DevOps Engineering',
+    badge: 'Hands-on Production Lab',
+    badgeColor: 'bg-purple-500/10 text-purple-700 dark:text-purple-400 border-purple-500/20',
+    avatarBg: 'bg-gradient-to-br from-purple-600 to-pink-600',
+    initials: 'MN',
     rating: 5,
-    avatar: 'AD',
-    avatarColor: 'from-purple-500 to-pink-600',
-    capstone: 'Production Design System & Prototype in Figma',
-    review:
-      'I wanted a legitimate design portfolio piece rather than concept redesigns. My mentor pushed me through three rounds of accessibility checks (WCAG 2.1) and auto-layout token structuring before signing off on my capstone. Recruiters verified my completion instantly!'
+    quote: 'Started with zero Kubernetes and CI/CD pipeline experience. Mentor gave direct feedback on my resume ATS keywords and GitHub repos. Completely changed my portfolio.',
+    keyHighlight: 'Production CI/CD & GitHub resume boost'
+  },
+  {
+    id: 5,
+    name: 'Rohan Kulkarni',
+    branch: 'BCA · Final Year',
+    college: 'Savitribai Phule Pune University (SPPU)',
+    collegeShort: 'Pune University',
+    track: 'AI & Machine Learning',
+    badge: 'Live Capstone Project',
+    badgeColor: 'bg-teal-500/10 text-teal-700 dark:text-teal-400 border-teal-500/20',
+    avatarBg: 'bg-gradient-to-br from-teal-600 to-emerald-600',
+    initials: 'RK',
+    rating: 5,
+    quote: 'LMS credentials were sent immediately after registration. Code repositories had step-by-step guidance. The disease prediction model became my final year major project.',
+    keyHighlight: 'Final year major project selected'
   }
 ]
 
 export default function MobileTestimonials() {
-  const [filter, setFilter] = useState('all') // 'all' | 'tech' | 'non-tech'
-  const shouldReduceMotion = useReducedMotion()
+  const [activeIdx, setActiveIdx] = useState(0)
+  const current = collegeReviews[activeIdx]
 
-  const filtered =
-    filter === 'all'
-      ? mobileReviews
-      : mobileReviews.filter((r) => r.category === filter)
+  const handlePrev = () => {
+    setActiveIdx((prev) => (prev === 0 ? collegeReviews.length - 1 : prev - 1))
+  }
+
+  const handleNext = () => {
+    setActiveIdx((prev) => (prev === collegeReviews.length - 1 ? 0 : prev + 1))
+  }
 
   return (
-    <section className="py-12 px-4 bg-gradient-to-b from-[#0B1730] to-[#070E1E] text-white overflow-hidden">
+    <section className="py-8 px-3.5 bg-slate-50/80 dark:bg-[#070E1E] text-slate-900 dark:text-white transition-colors overflow-hidden">
       <div className="max-w-md mx-auto">
-        {/* Header */}
-        <div className="text-center mb-6">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#8B3FF2]/20 border border-[#8B3FF2]/40 text-[#A855F7] text-[11px] font-bold mb-2">
-            <Sparkles size={12} className="text-amber-300" />
-            Verified Student Outcomes
-          </span>
-          <h2 className="text-2xl xs:text-3xl font-black text-white leading-tight mb-2">
-            Real Students. <br />
-            <span className="bg-gradient-to-r from-[#8B3FF2] to-cyan-400 bg-clip-text text-transparent">
-              Real Capstone Projects.
-            </span>
+        {/* Section Header */}
+        <div className="text-center mb-5">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-100 dark:bg-violet-950/60 border border-violet-200 dark:border-violet-800/60 text-violet-700 dark:text-violet-300 text-[11px] font-bold mb-2">
+            <GraduationCap size={13} className="text-violet-600 dark:text-violet-400" />
+            <span>Verified Student Reviews</span>
+          </div>
+
+          <h2 className="text-lg font-black text-slate-900 dark:text-white tracking-tight">
+            Trusted by College Students
           </h2>
-          <p className="text-xs text-gray-300 max-w-xs mx-auto leading-relaxed">
-            See how engineering students from premier colleges cracked placements with MIVEXO credentials.
+          <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-0.5">
+            Real internship feedback from SRM, VIT, Anna Univ, PES & Pune Univ
           </p>
         </div>
 
-        {/* Filter Pills */}
-        <div className="flex justify-center gap-1.5 mb-6">
-          <button
-            onClick={() => setFilter('all')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
-              filter === 'all'
-                ? 'bg-[#8B3FF2] text-white shadow-md shadow-[#8B3FF2]/40'
-                : 'bg-white/5 text-gray-300 hover:text-white border border-white/5'
-            }`}
-          >
-            All Reviews
-          </button>
-          <button
-            onClick={() => setFilter('tech')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
-              filter === 'tech'
-                ? 'bg-[#8B3FF2] text-white shadow-md shadow-[#8B3FF2]/40'
-                : 'bg-white/5 text-gray-300 hover:text-white border border-white/5'
-            }`}
-          >
-            Tech &amp; AI Tracks
-          </button>
-          <button
-            onClick={() => setFilter('non-tech')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
-              filter === 'non-tech'
-                ? 'bg-[#8B3FF2] text-white shadow-md shadow-[#8B3FF2]/40'
-                : 'bg-white/5 text-gray-300 hover:text-white border border-white/5'
-            }`}
-          >
-            Design &amp; Analytics
-          </button>
-        </div>
-
-        {/* Reviews Stacked List */}
-        <div className="space-y-4">
-          <AnimatePresence mode="popLayout">
-            {filtered.map((item, idx) => (
-              <motion.div
-                key={item.id}
-                layout
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-20px' }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{
-                  duration: shouldReduceMotion ? 0.05 : 0.35,
-                  delay: shouldReduceMotion ? 0 : idx * 0.05
-                }}
-                className="p-4 rounded-3xl bg-[#0F1C3A] border border-white/10 shadow-lg"
-              >
-                {/* Student Info Top */}
-                <div className="flex items-start justify-between gap-2 mb-3">
-                  <div className="flex items-center gap-2.5">
-                    <div
-                      className={`w-10 h-10 rounded-2xl bg-gradient-to-br ${item.avatarColor} flex items-center justify-center text-white font-black text-xs shadow-md shrink-0`}
-                    >
-                      {item.avatar}
-                    </div>
-                    <div>
-                      <h3 className="text-sm font-black text-white leading-tight">
-                        {item.name}
-                      </h3>
-                      <p className="text-[10px] text-violet-300 flex items-center gap-1 mt-0.5 font-medium">
-                        <GraduationCap size={11} /> {item.degree}
-                      </p>
-                    </div>
+        {/* Main Review Card - Mobile-Optimized */}
+        <div className="relative rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 p-4 shadow-sm">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={current.id}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2 }}
+              className="space-y-3.5"
+            >
+              {/* Top Row: Student Profile + College Badge */}
+              <div className="flex items-start justify-between gap-2.5">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  {/* Initials Avatar Badge */}
+                  <div
+                    className={`w-11 h-11 rounded-xl ${current.avatarBg} text-white flex items-center justify-center font-black text-sm shrink-0 shadow-sm`}
+                  >
+                    {current.initials}
                   </div>
 
-                  <span className="text-[9.5px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1 shrink-0">
-                    <CheckCircle2 size={10} /> Verified
-                  </span>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <h3 className="text-sm font-bold text-slate-900 dark:text-white truncate">
+                        {current.name}
+                      </h3>
+                      <span className="inline-flex items-center gap-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                        <CheckCircle2 size={12} />
+                        <span>Verified</span>
+                      </span>
+                    </div>
+
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
+                      {current.branch}
+                    </p>
+                  </div>
                 </div>
 
-                {/* College & Track Info */}
-                <div className="p-2 rounded-xl bg-white/5 border border-white/5 mb-3 text-[10.5px]">
-                  <p className="text-gray-300 flex items-center gap-1.5 leading-snug">
-                    <Building2 size={11} className="text-gray-400 shrink-0" />
-                    <span className="truncate">{item.college}</span>
-                  </p>
-                  <p className="text-[#A855F7] font-semibold mt-1">
-                    Track: {item.track}
-                  </p>
-                </div>
-
-                {/* Rating */}
-                <div className="flex items-center gap-1 mb-2">
-                  {[...Array(item.rating)].map((_, i) => (
-                    <Star key={i} size={11} className="fill-amber-400 text-amber-400" />
+                {/* Stars */}
+                <div className="flex items-center gap-0.5 text-amber-400 shrink-0">
+                  {[...Array(current.rating)].map((_, i) => (
+                    <Star key={i} size={12} className="fill-amber-400" />
                   ))}
-                  <span className="text-[11px] font-bold text-gray-300 ml-1">5.0</span>
                 </div>
+              </div>
 
-                {/* Review Text */}
-                <p className="text-xs text-gray-200 leading-relaxed mb-3">
-                  "{item.review}"
+              {/* College & Track Pills */}
+              <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-[11px] font-bold text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700/80">
+                  <GraduationCap size={12} className="text-violet-600 dark:text-violet-400 shrink-0" />
+                  <span className="truncate max-w-[200px]">{current.collegeShort}</span>
+                </span>
+
+                <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-bold border ${current.badgeColor}`}>
+                  <ShieldCheck size={11} className="shrink-0" />
+                  <span>{current.badge}</span>
+                </span>
+              </div>
+
+              {/* Quote Body */}
+              <div className="relative pt-1">
+                <Quote size={20} className="absolute -top-1 -left-1 text-slate-200 dark:text-slate-800 pointer-events-none -scale-x-100" />
+                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-normal relative z-10 pl-2">
+                  "{current.quote}"
                 </p>
+              </div>
 
-                {/* Capstone Deliverable Footer */}
-                <div className="pt-2 border-t border-white/10 text-[10.5px]">
-                  <span className="text-gray-400 uppercase text-[9px] tracking-wider block font-bold">
-                    Verified Capstone:
-                  </span>
-                  <span className="text-violet-200 font-semibold">
-                    {item.capstone}
-                  </span>
-                </div>
-              </motion.div>
-            ))}
+              {/* Footer Row: Full College Name + Outcome Highlight */}
+              <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400">
+                <span className="font-semibold text-violet-600 dark:text-violet-400 truncate max-w-[55%]">
+                  Track: {current.track}
+                </span>
+                <span className="font-bold text-emerald-600 dark:text-emerald-400 shrink-0">
+                  ✓ {current.keyHighlight}
+                </span>
+              </div>
+            </motion.div>
           </AnimatePresence>
+
+          {/* Controls: Prev/Next & Dots */}
+          <div className="flex items-center justify-between pt-3 mt-3 border-t border-slate-100 dark:border-slate-800/60">
+            <button
+              type="button"
+              onClick={handlePrev}
+              className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer"
+              aria-label="Previous review"
+            >
+              <ChevronLeft size={16} />
+            </button>
+
+            {/* Pagination Dots */}
+            <div className="flex items-center gap-1.5">
+              {collegeReviews.map((item, i) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => setActiveIdx(i)}
+                  aria-label={`View review ${i + 1}`}
+                  className={`h-1.5 rounded-full transition-all duration-200 cursor-pointer ${
+                    i === activeIdx
+                      ? 'w-5 bg-slate-900 dark:bg-white'
+                      : 'w-1.5 bg-slate-300 dark:bg-slate-700'
+                  }`}
+                />
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={handleNext}
+              className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer"
+              aria-label="Next review"
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
+        </div>
+
+        {/* Quick Trust Bar - Compact Mobile */}
+        <div className="grid grid-cols-3 gap-2 mt-3 text-center">
+          <div className="p-2 rounded-xl bg-white dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800/80">
+            <p className="text-xs font-black text-slate-900 dark:text-white">4.9/5</p>
+            <p className="text-[10px] text-slate-500 font-medium">Student Rating</p>
+          </div>
+          <div className="p-2 rounded-xl bg-white dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800/80">
+            <p className="text-xs font-black text-emerald-600 dark:text-emerald-400">100%</p>
+            <p className="text-[10px] text-slate-500 font-medium">Viva Approved</p>
+          </div>
+          <div className="p-2 rounded-xl bg-white dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800/80">
+            <p className="text-xs font-black text-violet-600 dark:text-violet-400">50+ Colls</p>
+            <p className="text-[10px] text-slate-500 font-medium">Pan India</p>
+          </div>
         </div>
       </div>
     </section>
