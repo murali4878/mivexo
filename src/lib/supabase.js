@@ -82,6 +82,7 @@ export async function saveStudentOnboarding(formData) {
     batch: formData.batch,
     batch_start_date: formData.batch === 'November 2026' ? 'November 10, 2026' : null,
     learning_mode: formData.learningMode,
+    payment_reference: formData.paymentRef ? formData.paymentRef.trim() : (formData.payment_reference || null),
     payment_status: 'pending', // Strictly locked to 'pending' by default
     agreed_policy: Boolean(formData.agreedPolicy),
     submitted_at: new Date().toISOString()

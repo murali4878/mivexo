@@ -1,48 +1,6 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import { Star, Sparkles, Building2, CheckCircle2 } from 'lucide-react'
+import { Sparkles } from 'lucide-react'
 
-const mentors = [
-  {
-    name: 'Arjun Mehta',
-    designation: 'Senior Software Engineer',
-    company: 'Google',
-    logo: '/companies/google.svg',
-    expertise: ['React', 'Node.js', 'System Design'],
-    rating: 4.9,
-    students: 428,
-    color: 'from-violet-600 to-indigo-600'
-  },
-  {
-    name: 'Priya Sharma',
-    designation: 'Data Scientist',
-    company: 'Amazon',
-    logo: '/companies/amazon.svg',
-    expertise: ['Python', 'ML', 'TensorFlow'],
-    rating: 4.8,
-    students: 312,
-    color: 'from-amber-500 to-orange-600'
-  },
-  {
-    name: 'Rohit Kumar',
-    designation: 'Product Manager',
-    company: 'Microsoft',
-    logo: '/companies/microsoft.svg',
-    expertise: ['Product Strategy', 'Agile', 'Analytics'],
-    rating: 4.9,
-    students: 267,
-    color: 'from-cyan-500 to-blue-600'
-  },
-  {
-    name: 'Sneha Patel',
-    designation: 'Technical Lead',
-    company: 'TCS',
-    logo: '/companies/tcs.svg',
-    expertise: ['Java', 'Cloud Native', 'Microservices'],
-    rating: 4.7,
-    students: 350,
-    color: 'from-emerald-500 to-teal-600'
-  }
-]
 
 const companyLogos = [
   { name: 'Google', logo: '/companies/google.svg', h: 'h-5' },
@@ -98,62 +56,7 @@ export default function MobileMentors() {
           </div>
         </div>
 
-        {/* Stacked Mobile Mentor Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {mentors.map((m, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-20px' }}
-              transition={{
-                duration: shouldReduceMotion ? 0.05 : 0.35,
-                delay: shouldReduceMotion ? 0 : idx * 0.06
-              }}
-              className="p-4 rounded-2xl bg-white dark:bg-[#13132B] border border-gray-200 dark:border-gray-800 shadow-sm flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center gap-3 mb-3">
-                  <div
-                    className={`w-11 h-11 rounded-2xl bg-gradient-to-br ${m.color} flex items-center justify-center text-white font-black text-sm shadow-md shrink-0`}
-                  >
-                    {m.name[0]}
-                  </div>
-
-                  <div className="flex-1 truncate">
-                    <h3 className="text-sm font-black text-gray-900 dark:text-white truncate leading-tight">
-                      {m.name}
-                    </h3>
-                    <p className="text-[11px] text-gray-500 dark:text-gray-400 truncate">{m.designation}</p>
-                    <span className="text-[10px] font-bold text-violet-600 dark:text-violet-400">
-                      @ {m.company}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Skills tags */}
-                <div className="flex flex-wrap gap-1 mb-3">
-                  {m.expertise.map((skill, si) => (
-                    <span
-                      key={si}
-                      className="text-[9.5px] px-2 py-0.5 rounded-md bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-white/5"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Bottom rating & alumni count */}
-              <div className="pt-2 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between text-[11px] text-gray-500 dark:text-gray-400">
-                <span className="flex items-center gap-1 font-bold text-amber-500 dark:text-amber-300">
-                  <Star size={12} className="fill-amber-400 text-amber-400" /> {m.rating}
-                </span>
-                <span className="text-[10px] text-gray-400">{m.students}+ alumni</span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        {/* Mentor cards removed */}
       </div>
     </section>
   )

@@ -218,7 +218,7 @@ export default function Ambassador() {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Murali V."
+                  placeholder="e.g. Rahul Sharma"
                   value={formData.name}
                   onChange={e => setFormData({ ...formData, name: e.target.value })}
                   className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-[#1A1A36] text-gray-900 dark:text-white text-sm"
@@ -229,7 +229,7 @@ export default function Ambassador() {
                 <input
                   type="email"
                   required
-                  placeholder="murali@example.com"
+                  placeholder="rahul@example.com"
                   value={formData.email}
                   onChange={e => setFormData({ ...formData, email: e.target.value })}
                   className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-[#1A1A36] text-gray-900 dark:text-white text-sm"
