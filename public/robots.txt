@@ -1,0 +1,30 @@
+# robots.txt for MIVEXO (https://www.mivexo.com)
+# Generated for Google Search favicon eligibility compliance.
+# Reference: https://developers.google.com/search/docs/appearance/favicon-in-search
+
+# Allow all crawlers full access by default
+User-agent: *
+Allow: /
+
+# Explicitly allow Googlebot to crawl home page and favicons
+User-agent: Googlebot
+Allow: /
+Allow: /favicon.ico
+Allow: /favicon-32x32.png
+Allow: /favicon-192.png
+Allow: /favicon-256.png
+Allow: /favicon-512.png
+Allow: /apple-touch-icon.png
+
+# Explicitly allow Googlebot-Image to crawl all favicon files
+# (required by Google's favicon guidelines)
+User-agent: Googlebot-Image
+Allow: /favicon.ico
+Allow: /favicon-32x32.png
+Allow: /favicon-192.png
+Allow: /favicon-256.png
+Allow: /favicon-512.png
+Allow: /apple-touch-icon.png
+
+# Sitemap location
+Sitemap: https://mivexo.in/sitemap.xml

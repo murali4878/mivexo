@@ -2,16 +2,40 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+
+    <!-- ═══════════════════════════════════════════════════════════
+         FAVICON — Google Search Guidelines compliant
+         • rel="icon"                  → primary (all modern browsers + Googlebot)
+         • rel="shortcut icon"         → legacy browser fallback (also indexed by Google)
+         • rel="apple-touch-icon"      → iOS home screen / Apple-touch (indexed by Google)
+         • rel="apple-touch-icon-precomposed" → older iOS versions
+         Sizes: 512px recommended so Google can scale to any surface.
+         File format: PNG (supported by Google: BMP, GIF, ICO, PNG, JPEG, PPM, TIFF)
+         URL: stable, absolute-path relative to domain root (/favicon-512.png)
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- Primary favicon — highest quality, Google uses this for Search results -->
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
+    <link rel="icon" type="image/png" sizes="256x256" href="/favicon-256.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32"   href="/favicon-32x32.png" />
+
+    <!-- ICO fallback for very old browsers -->
+    <link rel="icon"          href="/favicon.ico" sizes="any" />
+    <!-- Legacy alias — also recognised by Google -->
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    <!-- Apple touch icons — also indexed by Google for Search results -->
+    <link rel="apple-touch-icon"              sizes="512x512" href="/favicon-512.png" />
+    <link rel="apple-touch-icon"              sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon-precomposed"  sizes="180x180" href="/apple-touch-icon.png" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="MIVEXO - Learn. Build. Achieve. Premium EdTech platform for online learning, internships, and placement preparation." />
     <meta name="keywords" content="MIVEXO, EdTech, online learning, internships, placement preparation, certificates, courses" />
     <meta property="og:title" content="MIVEXO | Learn. Build. Achieve." />
     <meta property="og:description" content="Master in-demand skills through hands-on projects with expert mentorship." />
-    <meta property="og:image" content="/favicon.png" />
+    <meta property="og:image" content="https://mivexo.in/favicon-512.png" />
     <meta name="theme-color" content="#7C3AED" />
     <title>MIVEXO | Learn. Build. Achieve.</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
