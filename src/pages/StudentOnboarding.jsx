@@ -236,9 +236,7 @@ export default function StudentOnboarding() {
         {/* HEADER / BRANDING */}
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-2 group mb-4">
-            <div className="bg-white px-3 py-1.5 rounded-2xl shadow-xl shadow-[#8B3FF2]/20 group-hover:scale-105 transition-transform">
-              <img src={mivexoLogo} alt="MIVEXO" className="h-8 sm:h-9 w-auto object-contain" />
-            </div>
+            <img src={mivexoLogo} alt="MIVEXO" className="h-8 sm:h-9 w-auto object-contain dark:brightness-0 dark:invert group-hover:scale-105 transition-transform" />
           </Link>
 
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#8B3FF2]/15 border border-[#8B3FF2]/30 text-[#8B3FF2] text-xs font-bold uppercase tracking-wider mb-3">
