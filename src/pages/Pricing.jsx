@@ -44,7 +44,7 @@ import { useAuth } from '../context/AuthContext'
 import MobilePricing from '../components/mobile/MobilePricing'
 
 const PAYMENT_LINKS = {
-  lms: 'https://rzp.io/rzp/KEDQZrF',         // ₹1,000 pre-register
+  lms: 'https://rzp.io/rzp/ypB0OAJ',         // ₹1,000 pre-register
   foundation: 'https://rzp.io/rzp/KEDQZrF', // ₹3,000
   advanced: 'https://rzp.io/rzp/WCFgB2HX'   // ₹3,500
 }
